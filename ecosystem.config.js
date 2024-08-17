@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'my-global-routes',
+      name: 'saleasy-api',
       script: './dist/main.js',
       cwd: '/home/ubuntu/saleasy-api',
       watch: true,
