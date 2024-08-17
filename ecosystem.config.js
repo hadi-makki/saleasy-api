@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'my-global-routes',
       script: './dist/main.js',
-      cwd: '/home/ubuntu/my-global-routes',
+      cwd: '/home/ubuntu/saleasy-api',
       watch: true,
       env: {
         NODE_ENV: 'production',
