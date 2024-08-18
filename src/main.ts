@@ -10,7 +10,21 @@ import { BadRequestException } from './error/bad-request-error';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get<ConfigService>(ConfigService);
   app.useGlobalFilters(new HttpExceptionFilter());
+  const options = new DocumentBuilder()
+    .setTitle('Media API')
+    .setDescription('The Media API description')
+    .setVersion('1.0')
+    .addServer(
+      configService.get('SWAGGER_SERVER_URL'),
+      configService.get('SWAGGER_SERVER_ENVIRONMENT'),
+    )
+
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('swagger', app, document);
   app.use(helmet());
   app.enableCors();
   app.setGlobalPrefix('api');
@@ -23,19 +37,7 @@ async function bootstrap() {
       },
     }),
   );
-  const configService = app.get<ConfigService>(ConfigService);
-  const options = new DocumentBuilder()
-    .setTitle('Media API')
-    .setDescription('The Media API description')
-    .setVersion('1.0')
-    .addServer(
-      configService.get('SWAGGER_SERVER_URL'),
-      configService.get('SWAGGER_SERVER_ENVIRONMENT'),
-    )
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('swagger', app, document);
+
   await app.listen(3002);
 }
 bootstrap();
