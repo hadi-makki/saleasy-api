@@ -14,10 +14,10 @@ import { ConfigService } from '@nestjs/config';
   controllers: [AuthController],
   providers: [
     AuthService,
-    TokenService,
     UserService,
     JwtService,
     ConfigService,
+    TokenService,
   ],
 })
 export class AuthModule {}

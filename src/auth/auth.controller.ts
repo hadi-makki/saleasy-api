@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/request/login.dto';
 import { RegisterDto } from './dtos/request/register.dto';
@@ -8,6 +8,9 @@ import {
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
 } from 'src/error/api-responses.decorator';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { User } from 'src/decorators/users.decorator';
+import { UserEntity } from 'src/user/user.entity';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -34,7 +37,10 @@ export class AuthController {
   }
 
   @Get('test')
-  async test() {
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  async test(@User() user: UserEntity) {
+    console.log(user);
     return this.AuthService.test();
   }
 }

@@ -9,6 +9,8 @@ import TokenEntity from './token.entity';
 import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
 import { NotFoundException } from 'src/error/not-found-error';
 import { UserEntity } from 'src/user/user.entity';
+import { NextFunction, Request, Response } from 'express';
+import { UnauthorizedException } from 'src/error/unauthorized-error';
 
 @Injectable()
 export class TokenService {
@@ -19,6 +21,7 @@ export class TokenService {
     private readonly configService: ConfigService,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    // private readonly TokenService: TokenService,
   ) {}
   async generateTokens(userId: string): Promise<{
     accessToken: string;
@@ -130,5 +133,37 @@ export class TokenService {
         },
       },
     });
+  }
+
+  async validateJwt(
+    req: Request,
+    res: Response,
+  ): Promise<{
+    sub: string;
+    iat: number;
+    exp: number;
+  }> {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new UnauthorizedException('Missing Authorization Header');
+    }
+    const token = authHeader.split(' ')[1];
+    try {
+      const decodedJwt = (await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('JWT_ACCESS_SECRET'),
+      })) as {
+        sub: string;
+        iat: number;
+        exp: number;
+      };
+      const checkToken = await this.getTokenByAccessToken(token);
+
+      if (!checkToken) {
+        throw new UnauthorizedException('Invalid Token');
+      }
+      return decodedJwt;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid Token');
+    }
   }
 }
