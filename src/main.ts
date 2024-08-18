@@ -10,8 +10,20 @@ import { BadRequestException } from './error/bad-request-error';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get<ConfigService>(ConfigService);
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.use(helmet());
+  app.enableCors();
+  app.setGlobalPrefix('api');
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        const firstError = Object.values(validationErrors[0].constraints)[0];
+        return new BadRequestException(firstError);
+      },
+    }),
+  );
+  const configService = app.get<ConfigService>(ConfigService);
   const options = new DocumentBuilder()
     .setTitle('Media API')
     .setDescription('The Media API description')
@@ -25,19 +37,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
-  app.use(helmet());
-  app.enableCors();
-  app.setGlobalPrefix('api');
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      exceptionFactory: (validationErrors: ValidationError[] = []) => {
-        const firstError = Object.values(validationErrors[0].constraints)[0];
-        return new BadRequestException(firstError);
-      },
-    }),
-  );
-
   await app.listen(3002);
 }
 bootstrap();
