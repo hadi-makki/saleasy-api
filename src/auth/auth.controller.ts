@@ -40,7 +40,6 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   async test(@User() user: UserEntity) {
-    console.log(user);
     return this.AuthService.test();
   }
 }

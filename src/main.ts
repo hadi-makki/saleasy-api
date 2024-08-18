@@ -7,6 +7,8 @@ import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 import { BadRequestException } from './error/bad-request-error';
+import { Logger } from 'nestjs-pino';
+import { loggerMiddleware } from './logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -35,6 +37,7 @@ async function bootstrap() {
 
     .addBearerAuth()
     .build();
+  app.use(loggerMiddleware);
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
   await app.listen(3002);
