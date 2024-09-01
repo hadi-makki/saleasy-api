@@ -1,16 +1,16 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dtos/request/login.dto';
-import { RegisterDto } from './dtos/request/register.dto';
+import { User } from '../decorators/users.decorator';
 import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
-} from 'src/error/api-responses.decorator';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { User } from 'src/decorators/users.decorator';
-import { UserEntity } from 'src/user/user.entity';
+} from '../error/api-responses.decorator';
+import { AdminAuthGuard } from '../guards/admin.guard';
+import { UserEntity } from '../user/user.entity';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dtos/request/login.dto';
+import { RegisterDto } from './dtos/request/register.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -38,7 +38,7 @@ export class AuthController {
 
   @Get('test')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminAuthGuard)
   async test(@User() user: UserEntity) {
     return this.AuthService.test();
   }

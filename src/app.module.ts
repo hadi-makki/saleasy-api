@@ -9,6 +9,9 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
 import { loggerMiddleware } from './logger/logger.service';
+import { ItemModule } from './item/item.module';
+import { ItemCategoryModule } from './item-category/item-category.module';
+import { LinkModule } from './link/link.module';
 
 @Module({
   imports: [
@@ -19,6 +22,9 @@ import { loggerMiddleware } from './logger/logger.service';
     UserModule,
     AuthModule,
     TokenModule,
+    ItemModule,
+    ItemCategoryModule,
+    LinkModule,
     // LoggerModule,
   ],
   controllers: [AppController],
