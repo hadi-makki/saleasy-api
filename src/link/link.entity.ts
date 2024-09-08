@@ -52,6 +52,7 @@ export class LinkEntity extends MainEntity {
   sections: {
     title: string;
     categoryId: string;
+    items: string[];
     type: sectionsTypes;
     advertisementSection: {
       text1: string;
@@ -61,8 +62,8 @@ export class LinkEntity extends MainEntity {
         title: string;
         target: string;
       };
-    };
-  };
+    }[];
+  }[];
 
   @Column('jsonb', { nullable: false })
   footer: {
@@ -119,20 +120,39 @@ const defaultHero = {
   ],
 };
 const defaultCategoryItems = [];
-const defaultSections = {
-  title: '',
-  categoryId: '',
-  type: sectionsTypes.deals_of_the_day,
-  advertisementSection: {
-    text1: '',
-    text2: '',
-    redText: '',
-    link: {
-      title: '',
-      target: '',
-    },
+const defaultSections = [
+  {
+    title: '',
+    categoryId: '',
+    type: sectionsTypes.deals_of_the_day,
+    advertisementSection: [
+      {
+        text1: '',
+        text2: '',
+        redText: '',
+        link: {
+          title: '',
+          target: '',
+        },
+      },
+    ],
+    items: null,
   },
-};
+  {
+    title: '',
+    categoryId: '',
+    type: sectionsTypes.manually_selected,
+    items: [],
+    advertisementSection: null,
+  },
+  {
+    title: '',
+    categoryId: 'e3771f0d-19f8-4213-b0cd-5871bca515be',
+    type: sectionsTypes.category_related,
+    items: null,
+    advertisementSection: null,
+  },
+];
 const defaultFooter = {
   descriptionText: '',
 };

@@ -16,33 +16,36 @@ import {
 @Entity('item')
 export class ItemEntity extends MainEntity {
   @Column('text', { nullable: false })
-  title: string;
+  name: string;
 
   @Column('text', { nullable: false })
   description: string;
 
-  @Column('text', { nullable: false })
-  price: string;
+  @Column('int', { nullable: false, default: 0 })
+  price: number;
 
-  @Column('int', { nullable: false })
+  @Column('int', { nullable: false, default: 0 })
   discount: number;
 
-  @Column('text', { nullable: false })
-  image: string[];
+  @Column('jsonb', { nullable: false, default: [] })
+  images: string[];
 
   @Column('int', { nullable: false })
   stock: number;
 
-  @ManyToMany(
+  @Column('int', { nullable: false, default: 0 })
+  rating: number;
+
+  @ManyToOne(
     () => ItemSubCategoryEntity,
     (subCategories) => subCategories.items,
   )
-  @JoinTable()
-  subCategories: ItemSubCategoryEntity[];
+  subCategory: ItemSubCategoryEntity;
 
-  @ManyToMany(() => ItemCategoryEntity, (categories) => categories.items)
-  @JoinTable()
-  categories: ItemCategoryEntity[];
+  @ManyToOne(() => ItemCategoryEntity, (categories) => categories.items, {
+    nullable: false,
+  })
+  category: ItemCategoryEntity;
 
   @OneToMany(() => ItemReviewEntity, (itemReview) => itemReview.item)
   itemReviews: ItemReviewEntity[];

@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   FileTypeValidator,
+  Get,
   MaxFileSizeValidator,
+  Param,
   ParseFilePipe,
   Post,
   UploadedFile,
@@ -10,7 +12,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ItemCategoryService } from './item-category.service';
-import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import {
   ApiBadRequestResponse,
@@ -21,6 +29,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { createItemCategoryDto } from './dtos/req/create-item-category.dto';
 import { User } from 'src/decorators/users.decorator';
 import { UserEntity } from 'src/user/user.entity';
+import { CreatedItemCategoryDto } from './dtos/res/created-item-category.dto';
 
 @Controller('item-category')
 @ApiTags('Item Category')
@@ -36,6 +45,10 @@ export class ItemCategoryController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
   @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: CreatedItemCategoryDto,
+  })
   async createItemCategory(
     @UploadedFile(
       new ParseFilePipe({
@@ -51,5 +64,13 @@ export class ItemCategoryController {
     @User() user: UserEntity,
   ) {
     return this.itemCategory.createItemCategory(data, image, user);
+  }
+  @Get('get-categories-by-store-id/:storeId')
+  @ApiOkResponse({
+    description: 'The record has been successfully created.',
+    type: CreatedItemCategoryDto,
+  })
+  async getItemCategory(@Param('storeId') storeId: string) {
+    return this.itemCategory.getCategoriesByStoreId(storeId);
   }
 }

@@ -48,7 +48,7 @@ export class StoreEntity extends MainEntity {
   @OneToMany(() => ItemSubCategoryEntity, (subCategory) => subCategory.store)
   subCategories: ItemSubCategoryEntity[];
 
-  @OneToOne(() => LinkEntity, (link) => link.store)
+  @OneToOne(() => LinkEntity, (link) => link.store, { nullable: true })
   @JoinColumn()
   link: LinkEntity;
 }

@@ -19,8 +19,8 @@ export class ItemCategoryEntity extends MainEntity {
   @OneToMany(() => ItemSubCategoryEntity, (subCategory) => subCategory.category)
   subCategories: ItemSubCategoryEntity[];
 
-  @OneToMany(() => ItemEntity, (item) => item.categories)
-  items: ItemEntity[];
+  @OneToMany(() => ItemEntity, (item) => item.category)
+  items: ItemEntity;
 
   @ManyToOne(() => StoreEntity, (store) => store.categories)
   store: StoreEntity;

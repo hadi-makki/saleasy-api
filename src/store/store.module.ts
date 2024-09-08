@@ -12,6 +12,10 @@ import { JwtService } from '@nestjs/jwt';
 import { TokenService } from 'src/token/token.service';
 import TokenEntity from 'src/token/token.entity';
 import { LinkEntity } from 'src/link/link.entity';
+import { ItemService } from 'src/item/item.service';
+import { ItemEntity } from 'src/item/item.entity';
+import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
+import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
 
 @Module({
   imports: [
@@ -21,6 +25,9 @@ import { LinkEntity } from 'src/link/link.entity';
       UserEntity,
       TokenEntity,
       LinkEntity,
+      ItemEntity,
+      ItemCategoryEntity,
+      ItemSubCategoryEntity,
     ]),
   ],
   controllers: [StoreController],
@@ -31,6 +38,7 @@ import { LinkEntity } from 'src/link/link.entity';
     ConfigService,
     JwtService,
     TokenService,
+    ItemService,
   ],
 })
 export class StoreModule {}

@@ -152,7 +152,4 @@ export class CreatedLinkDto extends MainDto {
 
   @ApiProperty({ type: FooterDto, description: 'Footer details' })
   footer: FooterDto;
-
-  @ApiProperty({ type: CreatedStoreDto })
-  store: CreatedStoreDto;
 }

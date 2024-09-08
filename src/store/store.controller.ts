@@ -33,13 +33,17 @@ import { User } from 'src/decorators/users.decorator';
 import { UserEntity } from 'src/user/user.entity';
 import { Response } from 'express';
 import { CreatedStoreDto } from './dtos/res/created-store.dto';
+import { ItemService } from 'src/item/item.service';
 @Controller('store')
 @ApiTags('Store')
 @ApiNotFoundResponse()
 @ApiInternalServerErrorResponse()
 @ApiBadRequestResponse()
 export class StoreController {
-  constructor(private readonly storeService: StoreService) {}
+  constructor(
+    private readonly storeService: StoreService,
+    private readonly itemService: ItemService,
+  ) {}
 
   @Post('create')
   @ApiConsumes('multipart/form-data')
@@ -50,10 +54,10 @@ export class StoreController {
   @UseGuards(AdminAuthGuard)
   @UseInterceptors(FileInterceptor('logo'))
   @ApiBearerAuth()
-  // @ApiOkResponse({
-  //   description: 'The record has been successfully created.',
-  //   type: CreatedStoreDto,
-  // })
+  @ApiOkResponse({
+    description: 'The record has been successfully created.',
+    type: CreatedStoreDto,
+  })
   async createStore(
     @UploadedFile(
       new ParseFilePipe({
@@ -73,5 +77,20 @@ export class StoreController {
   @Get('/:id')
   async getStoreById(@Param('id') id: string) {
     return await this.storeService.getStoreById(id);
+  }
+
+  @Get('deals-of-the-day/:id')
+  async getDealsOfTheDay(@Param('id') id: string) {
+    return await this.itemService.getStoreDealsOfTheDayItems(id);
+  }
+
+  @Get('manually-selected-items-section/:id')
+  async getManuallySelectedItemsSection(@Param('id') id: string) {
+    return await this.itemService.getManuallySelectedItemsSection(id);
+  }
+
+  @Get('get-category-section-items/:id')
+  async getCategorySectionItems(@Param('id') id: string) {
+    return await this.itemService.getCategoryItemsSection(id);
   }
 }

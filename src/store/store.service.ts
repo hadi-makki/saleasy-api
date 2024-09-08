@@ -25,7 +25,7 @@ export class StoreService {
     data: CreateStoreDto,
     logo: Express.Multer.File,
     user: UserEntity,
-  ) {
+  ): Promise<CreatedStoreDto> {
     const uploadLogo = await this.mediaService.upload(logo, user.id);
     try {
       const createStore = this.storeRepository.create({
@@ -60,7 +60,7 @@ export class StoreService {
       where: { id },
       relations: {
         //   items: true,
-        //   categories: true,
+        categories: true,
         //   subCategories: true,
         link: true,
         //   user: true,

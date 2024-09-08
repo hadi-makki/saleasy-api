@@ -1,6 +1,6 @@
 import { MainEntity } from 'src/main-classes/mainEntity';
 import { UserEntity } from 'src/user/user.entity';
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { ItemCategoryEntity } from '../item-category/item-category.entity';
 import { ItemEntity } from 'src/item/item.entity';
 import { StoreEntity } from 'src/store/store.entity';
@@ -22,6 +22,6 @@ export class ItemSubCategoryEntity extends MainEntity {
   @ManyToOne(() => ItemCategoryEntity, (category) => category.subCategories)
   category: ItemCategoryEntity;
 
-  @ManyToMany(() => ItemEntity, (category) => category.subCategories)
+  @OneToMany(() => ItemEntity, (category) => category.subCategory)
   items: ItemEntity[];
 }

@@ -7,6 +7,7 @@ import { StoreEntity } from 'src/store/store.entity';
 import { S3Service } from 'src/s3/s3.service';
 import { MediaService } from 'src/media/media.service';
 import { UserEntity } from 'src/user/user.entity';
+import { CreatedItemCategoryDto } from './dtos/res/created-item-category.dto';
 
 @Injectable()
 export class ItemCategoryService {
@@ -22,7 +23,7 @@ export class ItemCategoryService {
     data: createItemCategoryDto,
     logo: Express.Multer.File,
     user: UserEntity,
-  ) {
+  ): Promise<CreatedItemCategoryDto> {
     const store = await this.storeRepository.findOne({
       where: { id: data.storeId },
     });
@@ -32,6 +33,8 @@ export class ItemCategoryService {
     const uploadedImage = await this.mediaService.upload(logo, user.id);
     const itemCategory = this.itemCategoryRepository.create({
       name: data.name,
+      description: data.description,
+      image: uploadedImage.id,
       store,
     });
     const newItemCategory = await this.itemCategoryRepository
@@ -41,5 +44,21 @@ export class ItemCategoryService {
         throw new BadRequestException(err);
       });
     return newItemCategory;
+  }
+
+  async getItemCategory(): Promise<CreatedItemCategoryDto[]> {
+    return this.itemCategoryRepository.find();
+  }
+
+  async getCategoriesByStoreId(
+    storeId: string,
+  ): Promise<CreatedItemCategoryDto[]> {
+    const getCategories = await this.itemCategoryRepository.find({
+      where: { store: { id: storeId } },
+      relations: {
+        subCategories: true,
+      },
+    });
+    return getCategories;
   }
 }
