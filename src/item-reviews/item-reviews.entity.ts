@@ -11,7 +11,7 @@ export class ItemReviewEntity extends MainEntity {
   @Column('text', { nullable: false })
   description: string;
 
-  @Column('number', { nullable: false })
+  @Column('int', { nullable: false })
   rating: number;
 
   @ManyToOne(() => UserEntity, (user) => user.reviews, { nullable: false })

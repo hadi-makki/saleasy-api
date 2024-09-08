@@ -25,7 +25,7 @@ export class ItemEntity extends MainEntity {
   @Column('text', { nullable: false })
   price: string;
 
-  @Column('number', { nullable: false })
+  @Column('int', { nullable: false })
   discount: number;
 
   @Column('text', { nullable: false })
@@ -37,16 +37,6 @@ export class ItemEntity extends MainEntity {
   @Column('int', { nullable: false })
   stock: number;
 
-  @BeforeUpdate()
-  @BeforeInsert()
-  // check if the user role is admin
-  async checkUserRole() {
-    if (this.user.role !== 'admin') {
-      throw new UnauthorizedException(
-        'You are not authorized to perform this action',
-      );
-    }
-  }
   @ManyToOne(() => UserEntity, (user) => user.items, { nullable: false })
   user: UserEntity;
 
@@ -58,4 +48,15 @@ export class ItemEntity extends MainEntity {
 
   @OneToMany(() => ItemReviewEntity, (itemReview) => itemReview.item)
   itemReviews: ItemReviewEntity[];
+
+  @BeforeUpdate()
+  @BeforeInsert()
+  // check if the user role is admin
+  async checkUserRole() {
+    if (this.user.role !== 'admin') {
+      throw new UnauthorizedException(
+        'You are not authorized to perform this action',
+      );
+    }
+  }
 }
