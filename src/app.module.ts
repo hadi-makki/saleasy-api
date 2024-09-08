@@ -12,6 +12,8 @@ import { loggerMiddleware } from './logger/logger.service';
 import { ItemModule } from './item/item.module';
 import { ItemCategoryModule } from './item-category/item-category.module';
 import { LinkModule } from './link/link.module';
+import { ItemReviewsModule } from './item-reviews/item-reviews.module';
+import { ItemReviewController } from './item-review/item-review.controller';
 
 @Module({
   imports: [
@@ -25,9 +27,10 @@ import { LinkModule } from './link/link.module';
     ItemModule,
     ItemCategoryModule,
     LinkModule,
+    ItemReviewsModule,
     // LoggerModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ItemReviewController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {

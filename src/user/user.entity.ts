@@ -13,6 +13,7 @@ import TokenEntity from 'src/token/token.entity';
 import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
 import { BadRequestException } from 'src/error/bad-request-error';
 import { ItemEntity } from 'src/item/item.entity';
+import { ItemReviewEntity } from 'src/item-reviews/item-reviews.entity';
 export enum UserRole {
   USER = 'user',
   ADMIN = 'admin',
@@ -40,6 +41,9 @@ export class UserEntity extends MainEntity {
 
   @OneToMany(() => ItemEntity, (item) => item.user)
   items: ItemEntity[];
+
+  @OneToMany(() => ItemReviewEntity, (itemReview) => itemReview.user)
+  reviews: ItemReviewEntity[];
 
   async comparePassword(oldPassword: string) {
     return await bcrypt.compare(oldPassword, this.password);
