@@ -1,15 +1,13 @@
-import { UnauthorizedException } from 'src/error/unauthorized-error';
 import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
-import { ItemSubCategoryEntity } from 'src/item-category/item-sub-category.entity';
+
 import { ItemReviewEntity } from 'src/item-reviews/item-reviews.entity';
+import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
 import { StoreEntity } from 'src/store/store.entity';
-import { UserEntity } from 'src/user/user.entity';
 import {
-  BeforeInsert,
-  BeforeUpdate,
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -39,7 +37,12 @@ export class ItemEntity extends MainEntity {
     () => ItemSubCategoryEntity,
     (subCategories) => subCategories.items,
   )
+  @JoinTable()
   subCategories: ItemSubCategoryEntity[];
+
+  @ManyToMany(() => ItemCategoryEntity, (categories) => categories.items)
+  @JoinTable()
+  categories: ItemCategoryEntity[];
 
   @OneToMany(() => ItemReviewEntity, (itemReview) => itemReview.item)
   itemReviews: ItemReviewEntity[];

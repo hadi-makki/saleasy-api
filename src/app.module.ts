@@ -14,6 +14,7 @@ import { ItemCategoryModule } from './item-category/item-category.module';
 import { LinkModule } from './link/link.module';
 import { ItemReviewsModule } from './item-reviews/item-reviews.module';
 import { StoreModule } from './store/store.module';
+import { ItemSubCategoryModule } from './item-sub-category/item-sub-category.module';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { StoreModule } from './store/store.module';
     LinkModule,
     ItemReviewsModule,
     StoreModule,
-    // LoggerModule,
+    ItemSubCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

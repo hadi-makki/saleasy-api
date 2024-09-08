@@ -40,6 +40,11 @@ async function bootstrap() {
   app.use(loggerMiddleware);
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
-  await app.listen(3002);
+  await app
+    .listen(3002)
+    .then(() => {})
+    .catch((error) => {
+      console.error(error);
+    });
 }
 bootstrap();

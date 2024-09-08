@@ -6,10 +6,14 @@ import { MediaService } from './media.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MediaEntity } from './media.entity';
 import { HttpService } from '@nestjs/axios';
+import { UserEntity } from 'src/user/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { TokenService } from 'src/token/token.service';
+import TokenEntity from 'src/token/token.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MediaEntity])],
+  imports: [TypeOrmModule.forFeature([MediaEntity, UserEntity, TokenEntity])],
   controllers: [MediaController],
-  providers: [MediaService, S3Service, ConfigService],
+  providers: [MediaService, S3Service, ConfigService, JwtService, TokenService],
 })
 export class MediaModule {}

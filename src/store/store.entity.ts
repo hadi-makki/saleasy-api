@@ -1,10 +1,17 @@
 import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
-import { ItemSubCategoryEntity } from 'src/item-category/item-sub-category.entity';
+import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
 import { ItemEntity } from 'src/item/item.entity';
 import { LinkEntity } from 'src/link/link.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
 import { UserEntity } from 'src/user/user.entity';
-import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 
 @Entity('stores')
 export class StoreEntity extends MainEntity {
@@ -17,16 +24,19 @@ export class StoreEntity extends MainEntity {
   @Column('uuid', { nullable: true })
   logo: string;
 
-  @Column('text', { nullable: false })
+  @Column('text', { nullable: true })
   address: string;
 
-  @Column('text', { nullable: false })
+  @Column('text', { nullable: true })
   phone: string;
 
-  @Column('text', { nullable: false })
+  @Column('text', { nullable: true })
   email: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.stores)
+  @Column('bool', { nullable: false, default: true })
+  isPublished: boolean;
+
+  @ManyToOne(() => UserEntity, (user) => user.stores, { nullable: false })
   user: UserEntity;
 
   @OneToMany(() => ItemEntity, (item) => item.store)
@@ -39,5 +49,6 @@ export class StoreEntity extends MainEntity {
   subCategories: ItemSubCategoryEntity[];
 
   @OneToOne(() => LinkEntity, (link) => link.store)
+  @JoinColumn()
   link: LinkEntity;
 }

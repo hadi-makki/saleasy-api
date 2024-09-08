@@ -26,14 +26,18 @@ export class LinkEntity extends MainEntity {
       text1: string;
       text2: string;
       text3: string;
+      text4: string;
+      backgroundImage: string;
       link: {
         title: string;
         target: string;
       };
     }[];
     sideBoxes: {
+      backgroundImage: string;
       text1: string;
       text2: string;
+      text3: string;
       link: {
         title: string;
         target: string;
@@ -68,3 +72,74 @@ export class LinkEntity extends MainEntity {
   @OneToOne(() => StoreEntity, (store) => store.link)
   store: StoreEntity;
 }
+const defaultHeader = {
+  links: {
+    instagram: '',
+    facebook: '',
+    twitter: '',
+  },
+  logo: '',
+  shippingFee: '',
+};
+const defaultHero = {
+  Carousel: [
+    {
+      text1: 'LIFESTYLE COLLECTION',
+      text2: 'MEN',
+      text3: 'SALE UP TO',
+      text4: '30% OFF',
+      backgroundImage: '7990afbc-56cc-4427-bbde-b04735bae70c',
+      link: {
+        title: 'SHOP NOW',
+        target: '',
+      },
+    },
+  ],
+  sideBoxes: [
+    {
+      backgroundImage: '96a2c92f-0dee-4b59-b158-cc7038739964',
+      text1: 'NEW ARRIVALS',
+      text2: 'SUMMER',
+      text3: 'SALE 20% OFF',
+      link: {
+        title: 'more proucts',
+        target: '',
+      },
+    },
+    {
+      backgroundImage: '3284596c-1b36-496e-8e60-d53a8a186237',
+      text1: 'NEW ARRIVALS',
+      text2: 'SUMMER',
+      text3: 'SALE 20% OFF',
+      link: {
+        title: 'more proucts',
+        target: '',
+      },
+    },
+  ],
+};
+const defaultCategoryItems = [];
+const defaultSections = {
+  title: '',
+  categoryId: '',
+  type: sectionsTypes.deals_of_the_day,
+  advertisementSection: {
+    text1: '',
+    text2: '',
+    redText: '',
+    link: {
+      title: '',
+      target: '',
+    },
+  },
+};
+const defaultFooter = {
+  descriptionText: '',
+};
+export const allDefault = {
+  header: defaultHeader,
+  Hero: defaultHero,
+  categoryItems: defaultCategoryItems,
+  sections: defaultSections,
+  footer: defaultFooter,
+};

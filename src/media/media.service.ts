@@ -19,7 +19,10 @@ export class MediaService {
     private readonly mediaRepository: Repository<MediaEntity>,
     private readonly s3Service: S3Service,
   ) {}
-  async upload(file: any, userId: string): Promise<{ message: string }> {
+  async upload(
+    file: any,
+    userId: string,
+  ): Promise<{ s3Key: string; id: string }> {
     const bufferLength = file.buffer.length || file.buffer.data.length;
     if (!bufferLength) {
       throw new BadRequestException('File buffer is empty');
@@ -28,23 +31,24 @@ export class MediaService {
     const extension = file.originalname.split('.').pop();
     const key = uuidv4() + '.' + extension;
 
-    // const media = this.mediaRepository.create({
-    //   s3Key: key,
-    //   originalName: file.originalname,
-    //   fileName: file.filename,
-    //   mimeType: file.mimetype,
-    //   size: file.size,
-    // });
+    const media = this.mediaRepository.create({
+      s3Key: key,
+      originalName: file.originalname,
+      fileName: file.filename,
+      mimeType: file.mimetype,
+      size: file.size,
+    });
 
-    // const newMedia = await this.mediaRepository.save({
-    //   ...media,
-    //   userId: userId,
-    // });
+    const newMedia = await this.mediaRepository.save({
+      ...media,
+      userId: userId,
+    });
 
     await this.s3Service.uploadFile(file, key);
 
     return {
-      message: 'File uploaded successfully',
+      s3Key: key,
+      id: newMedia.id,
     };
   }
   async delete(id: string) {
@@ -93,13 +97,18 @@ export class MediaService {
       throw new NotFoundException('Media not found');
     }
 
+    // Set headers for content type and disposition
     res.setHeader('Content-Type', media.mimeType);
     res.setHeader(
       'Content-Disposition',
       `inline; filename="${media.originalName}"`,
     );
 
-    return this.s3Service.getFile(media.s3Key);
+    // Get file stream from S3 (assuming S3 returns a readable stream)
+    const fileStream = await this.s3Service.getFile(media.s3Key);
+
+    // Pipe the stream to the response
+    fileStream.pipe(res);
   }
 
   async uploadUrl(url: string, userId: string): ReturnType<typeof this.upload> {

@@ -56,7 +56,6 @@ export class S3Service {
 
     const stream = new Stream.PassThrough();
     stream.end(Buffer.from(unit8Array));
-
     return stream;
   }
 
