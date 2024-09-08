@@ -1,5 +1,6 @@
 import { MainEntity } from 'src/main-classes/mainEntity';
-import { Column, Entity } from 'typeorm';
+import { StoreEntity } from 'src/store/store.entity';
+import { Column, Entity, OneToOne } from 'typeorm';
 
 export enum sectionsTypes {
   deals_of_the_day = 'deals_of_the_day',
@@ -63,4 +64,7 @@ export class LinkEntity extends MainEntity {
   footer: {
     descriptionText: string;
   };
+
+  @OneToOne(() => StoreEntity, (store) => store.link)
+  store: StoreEntity;
 }

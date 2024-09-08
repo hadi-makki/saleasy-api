@@ -13,6 +13,7 @@ import { ItemModule } from './item/item.module';
 import { ItemCategoryModule } from './item-category/item-category.module';
 import { LinkModule } from './link/link.module';
 import { ItemReviewsModule } from './item-reviews/item-reviews.module';
+import { StoreModule } from './store/store.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ItemReviewsModule } from './item-reviews/item-reviews.module';
     ItemCategoryModule,
     LinkModule,
     ItemReviewsModule,
+    StoreModule,
     // LoggerModule,
   ],
   controllers: [AppController],

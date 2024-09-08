@@ -3,6 +3,7 @@ import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
 import { ItemSubCategoryEntity } from 'src/item-category/item-sub-category.entity';
 import { ItemReviewEntity } from 'src/item-reviews/item-reviews.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
+import { StoreEntity } from 'src/store/store.entity';
 import { UserEntity } from 'src/user/user.entity';
 import {
   BeforeInsert,
@@ -31,14 +32,8 @@ export class ItemEntity extends MainEntity {
   @Column('text', { nullable: false })
   image: string[];
 
-  @Column('text', { nullable: false })
-  category: string;
-
   @Column('int', { nullable: false })
   stock: number;
-
-  @ManyToOne(() => UserEntity, (user) => user.items, { nullable: false })
-  user: UserEntity;
 
   @ManyToMany(
     () => ItemSubCategoryEntity,
@@ -49,14 +44,6 @@ export class ItemEntity extends MainEntity {
   @OneToMany(() => ItemReviewEntity, (itemReview) => itemReview.item)
   itemReviews: ItemReviewEntity[];
 
-  @BeforeUpdate()
-  @BeforeInsert()
-  // check if the user role is admin
-  async checkUserRole() {
-    if (this.user.role !== 'admin') {
-      throw new UnauthorizedException(
-        'You are not authorized to perform this action',
-      );
-    }
-  }
+  @ManyToOne(() => StoreEntity, (store) => store.items, { nullable: false })
+  store: StoreEntity;
 }

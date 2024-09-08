@@ -3,6 +3,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
 import { ItemCategoryEntity } from './item-category.entity';
 import { ItemEntity } from 'src/item/item.entity';
+import { StoreEntity } from 'src/store/store.entity';
 
 @Entity('item_sub_categories')
 export class ItemSubCategoryEntity extends MainEntity {
@@ -15,8 +16,8 @@ export class ItemSubCategoryEntity extends MainEntity {
   @Column('text', { nullable: true })
   image: string;
 
-  @ManyToOne(() => UserEntity, (user) => user)
-  user: UserEntity;
+  @ManyToOne(() => StoreEntity, (user) => user)
+  store: StoreEntity;
 
   @ManyToOne(() => ItemCategoryEntity, (category) => category.subCategories)
   category: ItemCategoryEntity;

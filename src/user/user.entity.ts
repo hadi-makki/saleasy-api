@@ -1,4 +1,9 @@
+import * as bcrypt from 'bcryptjs';
+import { BadRequestException } from 'src/error/bad-request-error';
+import { ItemReviewEntity } from 'src/item-reviews/item-reviews.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
+import { StoreEntity } from 'src/store/store.entity';
+import TokenEntity from 'src/token/token.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -8,12 +13,6 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
-import TokenEntity from 'src/token/token.entity';
-import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
-import { BadRequestException } from 'src/error/bad-request-error';
-import { ItemEntity } from 'src/item/item.entity';
-import { ItemReviewEntity } from 'src/item-reviews/item-reviews.entity';
 export enum UserRole {
   USER = 'user',
   ADMIN = 'admin',
@@ -36,14 +35,11 @@ export class UserEntity extends MainEntity {
   @Column('enum', { enum: UserRole, default: UserRole.USER })
   role: UserRole;
 
-  @OneToMany(() => ItemCategoryEntity, (itemCategory) => itemCategory.user)
-  itemCategories: ItemCategoryEntity[];
-
-  @OneToMany(() => ItemEntity, (item) => item.user)
-  items: ItemEntity[];
-
   @OneToMany(() => ItemReviewEntity, (itemReview) => itemReview.user)
   reviews: ItemReviewEntity[];
+
+  @OneToMany(() => StoreEntity, (store) => store.user)
+  stores: StoreEntity;
 
   async comparePassword(oldPassword: string) {
     return await bcrypt.compare(oldPassword, this.password);
@@ -51,24 +47,12 @@ export class UserEntity extends MainEntity {
 
   // constraints for user entity
   // only admins can have item categories
-  @BeforeInsert()
-  @BeforeUpdate()
-  async checkItemCategoriesConstraint() {
-    if (
-      this.role !== UserRole.ADMIN &&
-      this.itemCategories &&
-      this.itemCategories.length > 0
-    ) {
-      throw new BadRequestException('Only admins can have item categories.');
-    }
-  }
 
-  // only admins can have items
   @BeforeInsert()
   @BeforeUpdate()
-  async checkItemsConstraint() {
-    if (this.role !== UserRole.ADMIN && this.items && this.items.length > 0) {
-      throw new BadRequestException('Only admins can have items.');
+  async checkStoreConstraint() {
+    if (this.role !== UserRole.ADMIN && this.stores) {
+      throw new BadRequestException('Only admins can have a store.');
     }
   }
 }

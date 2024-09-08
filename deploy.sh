@@ -7,4 +7,6 @@ yarn install
 
 yarn build
 
+pm2 save
+
 pm2 start dist/src/main.js --name saleasy-api
