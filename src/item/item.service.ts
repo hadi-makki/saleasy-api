@@ -162,4 +162,17 @@ export class ItemService {
 
     return getCategory;
   }
+
+  async getItemById(itemId: string) {
+    const getItem = await this.itemRepository.findOne({
+      where: { id: itemId },
+      relations: {
+        subCategory: true,
+      },
+    });
+    if (!getItem) {
+      throw new BadRequestException('Item not found');
+    }
+    return getItem;
+  }
 }

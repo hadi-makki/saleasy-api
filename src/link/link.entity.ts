@@ -79,8 +79,8 @@ const defaultHeader = {
     facebook: '',
     twitter: '',
   },
-  logo: '',
-  shippingFee: '',
+  logo: '7c732995-436b-44cc-953c-eb986dc8e5ed',
+  shippingFee: 'Free Express Shipping',
 };
 const defaultHero = {
   Carousel: [

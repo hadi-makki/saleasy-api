@@ -36,6 +36,17 @@ export class ItemEntity extends MainEntity {
   @Column('int', { nullable: false, default: 0 })
   rating: number;
 
+  @Column('jsonb', {
+    nullable: false,
+    default: [
+      {
+        name: 'Color',
+        options: ['Red', 'Blue', 'Green'],
+      },
+    ],
+  })
+  options: { name: string; options: string[] }[];
+
   @ManyToOne(
     () => ItemSubCategoryEntity,
     (subCategories) => subCategories.items,
