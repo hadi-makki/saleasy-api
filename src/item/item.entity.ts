@@ -1,17 +1,9 @@
 import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
 
-import { ItemReviewEntity } from 'src/item-reviews/item-reviews.entity';
 import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
 import { StoreEntity } from 'src/store/store.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity('item')
 export class ItemEntity extends MainEntity {
@@ -32,9 +24,6 @@ export class ItemEntity extends MainEntity {
 
   @Column('int', { nullable: false })
   stock: number;
-
-  @Column('int', { nullable: false, default: 0 })
-  rating: number;
 
   @Column('jsonb', {
     nullable: false,
@@ -57,9 +46,6 @@ export class ItemEntity extends MainEntity {
     nullable: false,
   })
   category: ItemCategoryEntity;
-
-  @OneToMany(() => ItemReviewEntity, (itemReview) => itemReview.item)
-  itemReviews: ItemReviewEntity[];
 
   @ManyToOne(() => StoreEntity, (store) => store.items, { nullable: false })
   store: StoreEntity;

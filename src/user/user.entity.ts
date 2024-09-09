@@ -1,6 +1,5 @@
 import * as bcrypt from 'bcryptjs';
 import { BadRequestException } from 'src/error/bad-request-error';
-import { ItemReviewEntity } from 'src/item-reviews/item-reviews.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
 import { StoreEntity } from 'src/store/store.entity';
 import TokenEntity from 'src/token/token.entity';
@@ -34,9 +33,6 @@ export class UserEntity extends MainEntity {
 
   @Column('enum', { enum: UserRole, default: UserRole.USER })
   role: UserRole;
-
-  @OneToMany(() => ItemReviewEntity, (itemReview) => itemReview.user)
-  reviews: ItemReviewEntity[];
 
   @OneToMany(() => StoreEntity, (store) => store.user)
   stores: StoreEntity;

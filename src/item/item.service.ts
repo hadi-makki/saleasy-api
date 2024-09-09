@@ -7,6 +7,7 @@ import { UserEntity } from 'src/user/user.entity';
 import {
   In,
   LessThanOrEqual,
+  Like,
   MoreThan,
   MoreThanOrEqual,
   Repository,
@@ -17,6 +18,16 @@ import { CreateItemDto } from './dtos/req/create-item.dto';
 import { MediaService } from 'src/media/media.service';
 import { sectionsTypes } from 'src/link/link.entity';
 import { isUUID } from 'class-validator';
+import {
+  FilterOperator,
+  FilterSuffix,
+  Paginate,
+  PaginateQuery,
+  paginate,
+  Paginated,
+  PaginateConfig,
+} from 'nestjs-paginate';
+import { FilterPropertiesInterface } from 'src/main-classes/filter-properties.interface';
 
 @Injectable()
 export class ItemService {
@@ -174,5 +185,58 @@ export class ItemService {
       throw new BadRequestException('Item not found');
     }
     return getItem;
+  }
+
+  async getItems({
+    filters,
+    page,
+    limit,
+    sorting,
+  }: {
+    filters: FilterPropertiesInterface;
+    page: number;
+    limit: number;
+    sorting: [string, 'ASC' | 'DESC'][];
+  }) {
+    const query: PaginateQuery = {
+      limit: limit,
+      page: page,
+      sortBy: sorting,
+      path: 'users',
+    };
+
+    const filterableColumns: any = {
+      name: [FilterOperator.EQ, FilterOperator.CONTAINS], // Filter by name
+      age: true, // Assuming age is a filterable column
+      // Add other columns here as needed
+    };
+
+    // Build the dynamic filters
+    const filterQuery: any = {};
+
+    Object.keys(filters).forEach((filterKey) => {
+      if (filterableColumns[filterKey] && filters[filterKey]) {
+        filterQuery[filterKey] = filters[filterKey];
+      }
+    });
+
+    // Log the filter query to check its structure
+    console.log('filterQuery:', filterQuery);
+    const config: any = {
+      sortableColumns: ['id', 'name', 'createdAt'],
+      nullSort: 'last',
+      defaultSortBy: [['createdAt', 'ASC']],
+      searchableColumns: ['name'], // Make name searchable
+      select: ['*'], // Select all columns
+      filterableColumns,
+    };
+
+    if (Object.keys(filterQuery).length > 0) {
+      config.where = filterQuery;
+    }
+
+    const paginateResult = await paginate(query, this.itemRepository, config);
+
+    return paginateResult;
   }
 }
