@@ -130,6 +130,7 @@ export class ItemService {
     });
     return {
       sectionName: getManuallySelectedItems.title,
+      sections: getManuallySelectedItems.advertisementSection,
       items: getItems,
     };
   }
