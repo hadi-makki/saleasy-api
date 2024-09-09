@@ -223,7 +223,7 @@ export class ItemService {
     // Log the filter query to check its structure
     console.log('filterQuery:', filterQuery);
     const config: any = {
-      sortableColumns: ['id', 'name', 'createdAt'],
+      sortableColumns: ['id', 'name', 'createdAt', 'price'],
       nullSort: 'last',
       defaultSortBy: [['createdAt', 'ASC']],
       searchableColumns: ['name'], // Make name searchable

@@ -50,12 +50,14 @@ export class ItemController {
   @ApiQuery({ name: 'updatedAt', required: false })
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'price', required: false })
   async getItems(
     @Query('name') name?: string,
     @Query('createdAt') createdAt?: 'ASC' | 'DESC',
     @Query('updatedAt') updatedAt?: 'ASC' | 'DESC',
     @Query('limit') limit?: number,
     @Query('page') page?: number,
+    @Query('price') price?: 'ASC' | 'DESC',
   ) {
     const sorting = [];
     if (createdAt) {
@@ -63,6 +65,9 @@ export class ItemController {
     }
     if (updatedAt) {
       sorting.push(['updatedAt', updatedAt]);
+    }
+    if (price) {
+      sorting.push(['price', price]);
     }
 
     return await this.itemService.getItems({
