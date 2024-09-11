@@ -48,6 +48,8 @@ export class AuthService {
 
   async test() {
     this.userService.test();
-    return 'test';
+    return {
+      message: 'You are authorized',
+    };
   }
 }

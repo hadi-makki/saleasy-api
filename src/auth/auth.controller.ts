@@ -36,7 +36,7 @@ export class AuthController {
     return await this.AuthService.login(loginDto);
   }
 
-  @Get('test')
+  @Post('test-auth')
   @ApiBearerAuth()
   @UseGuards(AdminAuthGuard)
   async test(@User() user: UserEntity) {
