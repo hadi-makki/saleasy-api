@@ -14,6 +14,7 @@ export class AuthService {
     private readonly tokenService: TokenService,
     private readonly userService: UserService,
   ) {}
+
   async login({ email, password }: LoginDto): Promise<UserCreatedDto> {
     const getUser = await this.userService.getUserByEmail(email);
     if (!getUser) {
@@ -31,6 +32,8 @@ export class AuthService {
     email,
     name,
     password,
+    phoneNumber,
+    countryCode,
   }: RegisterDto): Promise<UserCreatedDto> {
     const checkEmail = await this.userService.getUserByEmail(email);
     if (checkEmail) {
@@ -41,6 +44,8 @@ export class AuthService {
       email,
       name,
       password: hashPass,
+      phoneNumber,
+      countryCode,
     });
     const generateTokens = await this.tokenService.generateTokens(newUser.id);
     return { ...returnUser(newUser), token: generateTokens.accessToken };

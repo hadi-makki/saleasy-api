@@ -24,6 +24,9 @@ export class UserEntity extends MainEntity {
   @Column('text', { nullable: false })
   password: string;
 
+  @Column('text', { nullable: false, default: '+96178886897' })
+  phoneNumber: string;
+
   @Column('text', { nullable: false })
   name: string;
 
