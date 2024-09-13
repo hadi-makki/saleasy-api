@@ -2,8 +2,16 @@ import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
 
 import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
+import { OrderEntity } from 'src/orders/orders.entity';
 import { StoreEntity } from 'src/store/store.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('item')
 export class ItemEntity extends MainEntity {
@@ -49,4 +57,8 @@ export class ItemEntity extends MainEntity {
 
   @ManyToOne(() => StoreEntity, (store) => store.items, { nullable: false })
   store: StoreEntity;
+
+  @ManyToMany(() => OrderEntity, (order) => order.items)
+  @JoinTable()
+  orders: OrderEntity[];
 }

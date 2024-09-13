@@ -12,4 +12,6 @@ export interface FilterPropertiesInterface {
   limit?: number;
 
   page?: number;
+
+  price: any;
 }

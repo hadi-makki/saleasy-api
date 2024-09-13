@@ -19,7 +19,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { AdminAuthGuard } from 'src/guards/admin.guard';
 import { CreateItemDto } from './dtos/req/create-item.dto';
 import { FilterPropertiesInterface } from 'src/main-classes/filter-properties.interface';
-import { Like } from 'typeorm';
+import { And, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 
 @Controller('item')
 @ApiTags('Item')
@@ -51,6 +51,8 @@ export class ItemController {
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'price', required: false })
+  @ApiQuery({ name: 'maxPrice', required: false })
+  @ApiQuery({ name: 'minPrice', required: false })
   async getItems(
     @Query('name') name?: string,
     @Query('createdAt') createdAt?: 'ASC' | 'DESC',
@@ -58,6 +60,8 @@ export class ItemController {
     @Query('limit') limit?: number,
     @Query('page') page?: number,
     @Query('price') price?: 'ASC' | 'DESC',
+    @Query('maxPrice') maxPrice?: number,
+    @Query('minPrice') minPrice?: number,
   ) {
     const sorting = [];
     if (createdAt) {
@@ -73,6 +77,10 @@ export class ItemController {
     return await this.itemService.getItems({
       filters: {
         name: name ? Like(`%${name}%`) : undefined,
+        price:
+          minPrice && maxPrice
+            ? MoreThanOrEqual(minPrice) && LessThanOrEqual(maxPrice)
+            : undefined,
       },
       page,
       limit,

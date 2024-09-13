@@ -3,6 +3,7 @@ import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.e
 import { ItemEntity } from 'src/item/item.entity';
 import { LinkEntity } from 'src/link/link.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
+import { OrderEntity } from 'src/orders/orders.entity';
 import { UserEntity } from 'src/user/user.entity';
 import {
   Column,
@@ -51,4 +52,7 @@ export class StoreEntity extends MainEntity {
   @OneToOne(() => LinkEntity, (link) => link.store, { nullable: true })
   @JoinColumn()
   link: LinkEntity;
+
+  @OneToMany(() => OrderEntity, (order) => order.store)
+  orders: OrderEntity[];
 }

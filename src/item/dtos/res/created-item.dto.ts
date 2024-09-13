@@ -1,12 +1,19 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { MainDto } from 'src/main-classes/main-dto';
 
 export class CreatedItemDto extends MainDto {
+  @ApiProperty()
   name: string;
+  @ApiProperty()
   description: string;
-  price: string;
-  discount: string;
+  @ApiProperty()
+  price: number;
+  @ApiProperty()
+  discount: number;
+  @ApiProperty()
   images: string[];
-  stock: string;
-  rating: string;
+  @ApiProperty()
+  stock: number;
+  @ApiProperty()
   options: { name: string; options: string[] }[];
 }

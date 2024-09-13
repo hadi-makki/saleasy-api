@@ -208,12 +208,12 @@ export class ItemService {
     const filterableColumns: any = {
       name: [FilterOperator.EQ, FilterOperator.CONTAINS], // Filter by name
       age: true, // Assuming age is a filterable column
+      price: [FilterOperator.GT, FilterOperator.LT], // Filter by price
       // Add other columns here as needed
     };
 
     // Build the dynamic filters
     const filterQuery: any = {};
-
     Object.keys(filters).forEach((filterKey) => {
       if (filterableColumns[filterKey] && filters[filterKey]) {
         filterQuery[filterKey] = filters[filterKey];
@@ -221,7 +221,6 @@ export class ItemService {
     });
 
     // Log the filter query to check its structure
-    console.log('filterQuery:', filterQuery);
     const config: any = {
       sortableColumns: ['id', 'name', 'createdAt', 'price'],
       nullSort: 'last',
