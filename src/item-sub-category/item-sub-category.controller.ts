@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { ItemSubCategoryService } from './item-sub-category.service';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -33,5 +33,10 @@ export class ItemSubCategoryController {
   })
   async createItemSubCategory(@Body() data: createItemSubCategoryDto) {
     return this.itemSubCategoryService.createItemSubCategory(data);
+  }
+
+  @Get('store/:id')
+  async getItemSubCategoryByStoreId(@Param('id') storeId: string) {
+    return this.itemSubCategoryService.getItemSubCategoryByStoreId(storeId);
   }
 }

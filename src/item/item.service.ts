@@ -28,6 +28,7 @@ import {
   PaginateConfig,
 } from 'nestjs-paginate';
 import { FilterPropertiesInterface } from 'src/main-classes/filter-properties.interface';
+import { UpdateItemDto } from './dtos/req/update-item';
 
 @Injectable()
 export class ItemService {
@@ -192,11 +193,13 @@ export class ItemService {
     page,
     limit,
     sorting,
+    storeId,
   }: {
     filters: FilterPropertiesInterface;
     page: number;
     limit: number;
     sorting: [string, 'ASC' | 'DESC'][];
+    storeId: string;
   }) {
     const query: PaginateQuery = {
       limit: limit,
@@ -234,8 +237,57 @@ export class ItemService {
       config.where = filterQuery;
     }
 
+    config.where = {
+      ...config.where,
+      store: { id: storeId },
+    };
+
     const paginateResult = await paginate(query, this.itemRepository, config);
 
     return paginateResult;
+  }
+
+  async updateItemImages(itemId: string, images: string[]) {
+    const getItem = await this.itemRepository.findOne({
+      where: { id: itemId },
+    });
+    if (!getItem) {
+      throw new BadRequestException('Item not found');
+    }
+    getItem.images = images;
+    await this.itemRepository.save(getItem);
+    return getItem;
+  }
+
+  async updateItem(itemId: string, data: UpdateItemDto) {
+    const getItem = await this.itemRepository.findOne({
+      where: { id: itemId },
+    });
+    if (!getItem) {
+      throw new BadRequestException('Item not found');
+    }
+    getItem.name = data.name;
+    getItem.description = data.description;
+    getItem.price = data.price;
+    getItem.images = data.images;
+    getItem.stock = data.stock;
+    getItem.options = data.options;
+    await this.itemRepository.save(getItem);
+    return getItem;
+  }
+
+  async deleteItem(itemId: string) {
+    const getItem = await this.itemRepository.findOne({
+      where: { id: itemId },
+    });
+    if (!getItem) {
+      throw new BadRequestException('Item not found');
+    }
+    getItem.images.forEach(async (image) => {
+      await this.mediaService.delete(image);
+    });
+
+    await this.itemRepository.delete({ id: itemId });
+    return { message: 'Item deleted successfully' };
   }
 }

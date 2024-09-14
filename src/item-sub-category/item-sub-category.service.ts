@@ -40,4 +40,15 @@ export class ItemSubCategoryService {
 
     return newItemSubCategory;
   }
+
+  async getItemSubCategoryByStoreId(storeId: string) {
+    const itemSubCategory = await this.itemSubCategoryRepository.find({
+      where: {
+        store: {
+          id: storeId,
+        },
+      },
+    });
+    return itemSubCategory;
+  }
 }

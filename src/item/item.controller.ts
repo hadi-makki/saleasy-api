@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -19,7 +20,8 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { AdminAuthGuard } from 'src/guards/admin.guard';
 import { CreateItemDto } from './dtos/req/create-item.dto';
 import { FilterPropertiesInterface } from 'src/main-classes/filter-properties.interface';
-import { And, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
+import { And, ILike, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
+import { UpdateItemDto } from './dtos/req/update-item';
 
 @Controller('item')
 @ApiTags('Item')
@@ -41,7 +43,7 @@ export class ItemController {
     return await this.itemService.getItemById(id);
   }
 
-  @Get()
+  @Get('/store/:id')
   @ApiOkResponse({
     description: 'The record has been successfully created.',
   })
@@ -54,6 +56,7 @@ export class ItemController {
   @ApiQuery({ name: 'maxPrice', required: false })
   @ApiQuery({ name: 'minPrice', required: false })
   async getItems(
+    @Param('id') id: string,
     @Query('name') name?: string,
     @Query('createdAt') createdAt?: 'ASC' | 'DESC',
     @Query('updatedAt') updatedAt?: 'ASC' | 'DESC',
@@ -76,7 +79,7 @@ export class ItemController {
 
     return await this.itemService.getItems({
       filters: {
-        name: name ? Like(`%${name}%`) : undefined,
+        name: name ? ILike(`%${name}%`) : undefined,
         price:
           minPrice && maxPrice
             ? MoreThanOrEqual(minPrice) && LessThanOrEqual(maxPrice)
@@ -85,6 +88,33 @@ export class ItemController {
       page,
       limit,
       sorting,
+      storeId: id,
     });
+  }
+
+  @Post('update-item-images/:id')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  @ApiParam({ name: 'id' })
+  async updateItemImages(
+    @Param('id') id: string,
+    @Body() data: { images: string[] },
+  ) {
+    return await this.itemService.updateItemImages(id, data.images);
+  }
+
+  @Post('update-item/:id')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  @ApiParam({ name: 'id' })
+  async updateItem(@Param('id') id: string, @Body() data: UpdateItemDto) {
+    return await this.itemService.updateItem(id, data);
+  }
+
+  @Delete('delete/:id')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  async deleteItem(@Param('id') id: string) {
+    return await this.itemService.deleteItem(id);
   }
 }

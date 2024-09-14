@@ -47,15 +47,25 @@ export class ItemEntity extends MainEntity {
   @ManyToOne(
     () => ItemSubCategoryEntity,
     (subCategories) => subCategories.items,
+    {
+      onDelete: 'CASCADE',
+      cascade: true,
+    },
   )
   subCategory: ItemSubCategoryEntity;
 
   @ManyToOne(() => ItemCategoryEntity, (categories) => categories.items, {
     nullable: false,
+    onDelete: 'CASCADE',
+    cascade: true,
   })
   category: ItemCategoryEntity;
 
-  @ManyToOne(() => StoreEntity, (store) => store.items, { nullable: false })
+  @ManyToOne(() => StoreEntity, (store) => store.items, {
+    nullable: false,
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
   store: StoreEntity;
 
   @ManyToMany(() => OrderEntity, (order) => order.items)

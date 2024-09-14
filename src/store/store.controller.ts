@@ -93,4 +93,9 @@ export class StoreController {
   async getCategorySectionItems(@Param('id') id: string) {
     return await this.itemService.getCategoryItemsSection(id);
   }
+
+  @Get('items/:id')
+  async getItemsByStoreId(@Param('id') id: string) {
+    return await this.itemService.getItemsByStoreId(id);
+  }
 }

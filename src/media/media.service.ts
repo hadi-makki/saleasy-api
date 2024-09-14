@@ -77,6 +77,7 @@ export class MediaService {
 
       // Log success
       console.log(`Successfully deleted media with ID: ${id}`);
+      return { message: 'Media deleted successfully' };
     } catch (err) {
       throw new BadRequestException('error in deleting the message ' + err);
     }

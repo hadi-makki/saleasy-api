@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   Header,
   MaxFileSizeValidator,
@@ -91,5 +92,22 @@ export class MediaController {
   @ApiBadRequestResponse('Bad request error')
   async downloadFile(@Param('id') id: string, @Res() res: Response) {
     await this.mediaService.getFileStreamById(id, res);
+  }
+
+  @Delete('delete/:id')
+  @ApiOperation({
+    summary: 'Delete file',
+    description: 'Send the ID of the file you uploaded previously to delete it',
+  })
+  @ApiOkResponse({
+    description: 'File deleted successfully',
+  })
+  @ApiInternalServerErrorResponse()
+  @ApiNotFoundResponse('Media not found')
+  @ApiBadRequestResponse('Bad request error')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async deleteFile(@Param('id') id: string) {
+    return await this.mediaService.delete(id);
   }
 }
