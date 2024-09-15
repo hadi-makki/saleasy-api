@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { ItemSubCategoryService } from './item-sub-category.service';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -12,6 +21,8 @@ import { CreatedItemSubCategoryDto } from './dtos/res/created-item-sub-category.
 import { createItemSubCategoryDto } from './dtos/req/create-item-sub-category.dto';
 import { User } from 'src/decorators/users.decorator';
 import { UserEntity } from 'src/user/user.entity';
+import { AdminAuthGuard } from 'src/guards/admin.guard';
+import { EditSubCategoryDto } from './dtos/req/edit-sub-category.dto';
 
 @Controller('item-sub-category')
 @ApiTags('Item Sub Category')
@@ -26,7 +37,7 @@ export class ItemSubCategoryController {
 
   @Post('create')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminAuthGuard)
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: CreatedItemSubCategoryDto,
@@ -38,5 +49,22 @@ export class ItemSubCategoryController {
   @Get('store/:id')
   async getItemSubCategoryByStoreId(@Param('id') storeId: string) {
     return this.itemSubCategoryService.getItemSubCategoryByStoreId(storeId);
+  }
+
+  @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  async deleteSubCategory(@Param('id') subCategoryId: string) {
+    return this.itemSubCategoryService.deleteSubCategory(subCategoryId);
+  }
+
+  @Patch(':id')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  async editSubCategory(
+    @Param('id') subCategoryId: string,
+    @Body() data: EditSubCategoryDto,
+  ) {
+    return this.itemSubCategoryService.editItemSubCategory(subCategoryId, data);
   }
 }

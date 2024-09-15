@@ -290,4 +290,12 @@ export class ItemService {
     await this.itemRepository.delete({ id: itemId });
     return { message: 'Item deleted successfully' };
   }
+
+  async deleteItems(items: ItemEntity[]) {
+    items.forEach(async (item) => {
+      await this.deleteItem(item.id);
+    });
+
+    return { message: 'Items deleted successfully' };
+  }
 }

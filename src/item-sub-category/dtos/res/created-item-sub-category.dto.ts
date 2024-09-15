@@ -7,9 +7,6 @@ export class CreatedItemSubCategoryDto extends MainDto {
   @ApiProperty()
   name: string;
 
-  @ApiProperty()
-  description: string;
-
   @ApiProperty({ type: CreatedItemCategoryDto })
   category: CreatedItemCategoryDto;
 

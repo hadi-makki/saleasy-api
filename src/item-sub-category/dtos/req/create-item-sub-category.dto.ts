@@ -6,9 +6,9 @@ export class createItemSubCategoryDto {
   @IsString()
   name: string;
 
-  @ApiProperty()
-  @IsString()
-  description: string;
+  // @ApiProperty()
+  // @IsString()
+  // description: string;
 
   @ApiProperty()
   @IsUUID()
