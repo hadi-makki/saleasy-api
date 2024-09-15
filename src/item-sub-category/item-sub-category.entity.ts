@@ -21,7 +21,6 @@ export class ItemSubCategoryEntity extends MainEntity {
 
   @ManyToOne(() => ItemCategoryEntity, (category) => category.subCategories, {
     onDelete: 'CASCADE',
-    cascade: true,
   })
   category: ItemCategoryEntity;
 

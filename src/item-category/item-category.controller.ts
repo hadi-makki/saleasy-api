@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   MaxFileSizeValidator,
@@ -30,6 +31,7 @@ import { createItemCategoryDto } from './dtos/req/create-item-category.dto';
 import { User } from 'src/decorators/users.decorator';
 import { UserEntity } from 'src/user/user.entity';
 import { CreatedItemCategoryDto } from './dtos/res/created-item-category.dto';
+import { AdminAuthGuard } from 'src/guards/admin.guard';
 
 @Controller('item-category')
 @ApiTags('Item Category')
@@ -72,5 +74,15 @@ export class ItemCategoryController {
   })
   async getItemCategory(@Param('storeId') storeId: string) {
     return this.itemCategory.getCategoriesByStoreId(storeId);
+  }
+
+  @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  @ApiOkResponse({
+    description: 'The record has been successfully deleted.',
+  })
+  async deleteCategory(@Param('id') id: string) {
+    return this.itemCategory.deleteCategory(id);
   }
 }

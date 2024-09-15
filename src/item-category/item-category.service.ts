@@ -8,6 +8,7 @@ import { S3Service } from 'src/s3/s3.service';
 import { MediaService } from 'src/media/media.service';
 import { UserEntity } from 'src/user/user.entity';
 import { CreatedItemCategoryDto } from './dtos/res/created-item-category.dto';
+import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
 
 @Injectable()
 export class ItemCategoryService {
@@ -60,5 +61,19 @@ export class ItemCategoryService {
       },
     });
     return getCategories;
+  }
+
+  async deleteCategory(categoryId: string): Promise<SuccessMessageReturn> {
+    const category = await this.itemCategoryRepository.findOne({
+      where: { id: categoryId },
+    });
+    if (!category) {
+      throw new BadRequestException('Category not found');
+    }
+    await this.mediaService.delete(category.image);
+    await this.itemCategoryRepository.remove(category);
+    return {
+      message: 'Category deleted successfully',
+    };
   }
 }

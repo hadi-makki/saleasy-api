@@ -16,11 +16,21 @@ export class ItemCategoryEntity extends MainEntity {
   @Column('text', { nullable: true })
   image: string;
 
-  @OneToMany(() => ItemSubCategoryEntity, (subCategory) => subCategory.category)
+  @OneToMany(
+    () => ItemSubCategoryEntity,
+    (subCategory) => subCategory.category,
+    {
+      cascade: ['remove'],
+      onDelete: 'CASCADE',
+    },
+  )
   subCategories: ItemSubCategoryEntity[];
 
-  @OneToMany(() => ItemEntity, (item) => item.category)
-  items: ItemEntity;
+  @OneToMany(() => ItemEntity, (item) => item.category, {
+    cascade: ['remove'],
+    onDelete: 'CASCADE',
+  })
+  items: ItemEntity[];
 
   @ManyToOne(() => StoreEntity, (store) => store.categories)
   store: StoreEntity;
