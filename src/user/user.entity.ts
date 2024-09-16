@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 import { BadRequestException } from 'src/error/bad-request-error';
 import { MainEntity } from 'src/main-classes/mainEntity';
+import { OrderEntity } from 'src/orders/orders.entity';
 import { StoreEntity } from 'src/store/store.entity';
 import TokenEntity from 'src/token/token.entity';
 import {
@@ -39,6 +40,9 @@ export class UserEntity extends MainEntity {
 
   @OneToMany(() => StoreEntity, (store) => store.user)
   stores: StoreEntity;
+
+  @OneToMany(() => OrderEntity, (order) => order.user)
+  orders: OrderEntity[];
 
   async comparePassword(oldPassword: string) {
     return await bcrypt.compare(oldPassword, this.password);
