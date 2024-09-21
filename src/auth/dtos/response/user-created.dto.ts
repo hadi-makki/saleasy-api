@@ -22,4 +22,10 @@ export class UserCreatedDto extends MainDto {
 
   @ApiProperty()
   token: string;
+
+  @ApiProperty()
+  totalOrders: number;
+
+  @ApiProperty()
+  totalSpent: number;
 }

@@ -7,6 +7,7 @@ import {
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  Patch,
   Post,
   UploadedFile,
   UseGuards,
@@ -84,5 +85,34 @@ export class ItemCategoryController {
   })
   async deleteCategory(@Param('id') id: string) {
     return this.itemCategory.deleteCategory(id);
+  }
+
+  @Patch('update-name/:id')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+  })
+  async updateCategoryName(
+    @Param('id') id: string,
+    @Body('name') name: string,
+  ) {
+    return this.itemCategory.updateCategoryName(id, name);
+  }
+
+  @Get()
+  @ApiOkResponse({
+    description: 'The record has been successfully fetched.',
+  })
+  async getCategories() {
+    return this.itemCategory.getItemCategory();
+  }
+
+  @Get('store/:id')
+  @ApiOkResponse({
+    description: 'The record has been successfully fetched.',
+  })
+  async getCategory(@Param('id') id: string) {
+    return this.itemCategory.getStoreCategories(id);
   }
 }

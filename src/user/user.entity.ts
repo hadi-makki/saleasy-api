@@ -10,6 +10,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   OneToMany,
   OneToOne,
 } from 'typeorm';
@@ -43,6 +44,18 @@ export class UserEntity extends MainEntity {
 
   @OneToMany(() => OrderEntity, (order) => order.user)
   orders: OrderEntity[];
+
+  @Column('int', { nullable: false, default: 0 })
+  totalOrders: number;
+
+  @Column('float', { nullable: false, default: 0 })
+  totalSpent: number;
+
+  @ManyToMany(() => StoreEntity, (store) => store.customers, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  customersFor: StoreEntity[];
 
   async comparePassword(oldPassword: string) {
     return await bcrypt.compare(oldPassword, this.password);

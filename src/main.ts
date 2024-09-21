@@ -19,6 +19,8 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      forbidNonWhitelisted: true, // Throws an error if extra properties are sent
+      transform: true, // Automatically transforms payloads to the appropriate DTO class
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
         const firstError = Object.values(validationErrors[0].constraints)[0];
         return new BadRequestException(firstError);

@@ -9,6 +9,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -55,4 +57,8 @@ export class StoreEntity extends MainEntity {
 
   @OneToMany(() => OrderEntity, (order) => order.store)
   orders: OrderEntity[];
+
+  @ManyToMany(() => UserEntity, (user) => user.customersFor)
+  @JoinTable()
+  customers: UserEntity[];
 }

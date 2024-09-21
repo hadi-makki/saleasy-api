@@ -141,6 +141,7 @@ export class ItemService {
       },
     });
     return {
+      id: getManuallySelectedItems.id,
       sectionName: getManuallySelectedItems.title,
       sections: getManuallySelectedItems.advertisementSection,
       items: getItems,
@@ -190,8 +191,8 @@ export class ItemService {
 
   async getItems({
     filters,
-    page,
-    limit,
+    page = 1,
+    limit = 10,
     sorting,
     storeId,
   }: {
@@ -207,6 +208,8 @@ export class ItemService {
       sortBy: sorting,
       path: 'users',
     };
+
+    console.log(limit, page, sorting);
 
     const filterableColumns: any = {
       name: [FilterOperator.EQ, FilterOperator.CONTAINS], // Filter by name
@@ -241,6 +244,8 @@ export class ItemService {
       ...config.where,
       store: { id: storeId },
     };
+
+    console.log('we are before the query');
 
     const paginateResult = await paginate(query, this.itemRepository, config);
 

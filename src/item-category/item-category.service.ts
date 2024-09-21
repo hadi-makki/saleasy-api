@@ -76,4 +76,33 @@ export class ItemCategoryService {
       message: 'Category deleted successfully',
     };
   }
+
+  async updateCategoryName(
+    categoryId: string,
+    name: string,
+  ): Promise<SuccessMessageReturn> {
+    const category = await this.itemCategoryRepository.findOne({
+      where: { id: categoryId },
+    });
+    if (!category) {
+      throw new BadRequestException('Category not found');
+    }
+    category.name = name;
+    await this.itemCategoryRepository.save(category);
+    return {
+      message: 'Category name updated successfully',
+    };
+  }
+
+  async getStoreCategories(storeId: string): Promise<CreatedItemCategoryDto[]> {
+    const checkStore = await this.storeRepository.findOne({
+      where: { id: storeId },
+    });
+    if (!checkStore) {
+      throw new BadRequestException('Store not found');
+    }
+    return this.itemCategoryRepository.find({
+      where: { store: { id: storeId } },
+    });
+  }
 }

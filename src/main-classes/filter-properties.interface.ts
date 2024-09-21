@@ -13,5 +13,5 @@ export interface FilterPropertiesInterface {
 
   page?: number;
 
-  price: any;
+  price?: any;
 }

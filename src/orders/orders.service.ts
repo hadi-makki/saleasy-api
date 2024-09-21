@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity, OrderStatus } from './orders.entity';
 import { CreateOrderDto } from './dtos/req/create-order.dto';
@@ -8,6 +8,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { CreatedOrderDto } from './dtos/res/created-order.dto';
 import { NotFoundException } from 'src/error/not-found-error';
 import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
+import { StoreEntity } from 'src/store/store.entity';
 
 @Injectable()
 export class OrdersService {
@@ -16,6 +17,10 @@ export class OrdersService {
     private readonly orderRepository: Repository<OrderEntity>,
     @InjectRepository(ItemEntity)
     private readonly itemRepository: Repository<ItemEntity>,
+    @InjectRepository(StoreEntity)
+    private readonly storeRepository: Repository<StoreEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   async createOrder(
@@ -49,7 +54,6 @@ export class OrdersService {
     });
 
     const total = items.reduce((acc, item) => {
-      console.log(acc);
       const itemData = data.items.find((i) => i.id === item.id);
       return acc + item.price * itemData.quantity;
     }, 0);
@@ -59,13 +63,59 @@ export class OrdersService {
       store: {
         id: data.storeId,
       },
-
+      user,
       total: total,
       orderOptions,
       shippingInfo: data.shippingInfo,
     });
+    const checkIsCustomer = await this.storeRepository.findOne({
+      where: {
+        customers: {
+          id: user.id,
+        },
+      },
+      relations: {
+        customers: true,
+      },
+    });
+    if (!checkIsCustomer) {
+      this.handleCustomers(data.storeId, user);
+    }
 
     return await this.orderRepository.save(createOrder);
+  }
+
+  async handleCustomers(storeId: string, user: UserEntity) {
+    try {
+      const store = await this.storeRepository.findOne({
+        where: {
+          id: storeId,
+        },
+        relations: {
+          customers: true,
+        },
+      });
+      if (!store.customers) {
+        store.customers = [];
+      }
+      store.customers.push(user);
+      await this.storeRepository.save(store);
+      const userStore = await this.userRepository.findOne({
+        where: {
+          id: user.id,
+        },
+        relations: {
+          stores: true,
+        },
+      });
+      if (!userStore.customersFor) {
+        userStore.customersFor = [];
+      }
+      userStore.customersFor.push(store);
+      await this.userRepository.save(userStore);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   async getOrders(): Promise<CreatedOrderDto[]> {

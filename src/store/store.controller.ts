@@ -7,6 +7,7 @@ import {
   Param,
   ParseFilePipe,
   Post,
+  Query,
   Res,
   UploadedFile,
   UseGuards,
@@ -19,6 +20,7 @@ import {
   ApiConsumes,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -34,6 +36,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { Response } from 'express';
 import { CreatedStoreDto } from './dtos/res/created-store.dto';
 import { ItemService } from 'src/item/item.service';
+import { ILike } from 'typeorm';
 @Controller('store')
 @ApiTags('Store')
 @ApiNotFoundResponse()
@@ -97,5 +100,40 @@ export class StoreController {
   @Get('items/:id')
   async getItemsByStoreId(@Param('id') id: string) {
     return await this.itemService.getItemsByStoreId(id);
+  }
+
+  @Get('store-customers/:id')
+  @UseGuards(AdminAuthGuard)
+  @ApiBearerAuth()
+  @ApiQuery({ name: 'name', required: false })
+  @ApiQuery({ name: 'createdAt', required: false })
+  @ApiQuery({ name: 'updatedAt', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  async getStoreCustomers(
+    @Param('id') id: string,
+    @Query('name') name?: string,
+    @Query('createdAt') createdAt?: 'ASC' | 'DESC',
+    @Query('updatedAt') updatedAt?: 'ASC' | 'DESC',
+    @Query('limit') limit?: number,
+    @Query('page') page?: number,
+  ) {
+    const sorting = [];
+    if (createdAt) {
+      sorting.push(['createdAt', createdAt]);
+    }
+    if (updatedAt) {
+      sorting.push(['updatedAt', updatedAt]);
+    }
+
+    return await this.storeService.getCustomersByStoreId({
+      storeId: id,
+      page,
+      limit,
+      sorting,
+      filters: {
+        name: name ? ILike(`%${name}%`) : undefined,
+      },
+    });
   }
 }
