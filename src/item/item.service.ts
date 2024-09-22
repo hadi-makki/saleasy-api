@@ -97,6 +97,15 @@ export class ItemService {
   }
 
   async getStoreDealsOfTheDayItems(storeId: string) {
+    const checkStore = await this.storeRepository.findOne({
+      where: { id: storeId },
+      relations: {
+        link: true,
+      },
+    });
+    if (!checkStore) {
+      throw new BadRequestException('Store not found');
+    }
     const getItems = await this.itemRepository.find({
       where: {
         store: { id: storeId },
@@ -110,7 +119,12 @@ export class ItemService {
     if (!getItems) {
       throw new BadRequestException('No items found');
     }
-    return getItems;
+    return {
+      sections: checkStore.link.sections.find(
+        (section) => section.type === sectionsTypes.deals_of_the_day,
+      ),
+      items: getItems,
+    };
   }
 
   async getManuallySelectedItemsSection(storeId: string) {
@@ -173,7 +187,10 @@ export class ItemService {
       },
     });
 
-    return getCategory;
+    return {
+      ...getCategory,
+      section: getCategoryItems,
+    };
   }
 
   async getItemById(itemId: string) {
