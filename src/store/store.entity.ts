@@ -1,7 +1,7 @@
 import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
 import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
 import { ItemEntity } from 'src/item/item.entity';
-import { LinkEntity } from 'src/link/link.entity';
+import { LinkEntity } from 'src/link/entities/link.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
 import { OrderEntity } from 'src/orders/orders.entity';
 import { UserEntity } from 'src/user/user.entity';

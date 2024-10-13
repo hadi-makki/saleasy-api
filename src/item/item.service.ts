@@ -16,7 +16,6 @@ import { ItemEntity } from './item.entity';
 import { BadRequestException } from 'src/error/bad-request-error';
 import { CreateItemDto } from './dtos/req/create-item.dto';
 import { MediaService } from 'src/media/media.service';
-import { sectionsTypes } from 'src/link/link.entity';
 import { isUUID } from 'class-validator';
 import {
   FilterOperator,
@@ -29,6 +28,7 @@ import {
 } from 'nestjs-paginate';
 import { FilterPropertiesInterface } from 'src/main-classes/filter-properties.interface';
 import { UpdateItemDto } from './dtos/req/update-item';
+import { sectionsTypes } from 'src/link/entities/section.entity';
 
 @Injectable()
 export class ItemService {

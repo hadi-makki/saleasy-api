@@ -11,7 +11,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from 'src/token/token.service';
 import TokenEntity from 'src/token/token.entity';
-import { LinkEntity } from 'src/link/link.entity';
+import { LinkEntity } from 'src/link/entities/link.entity';
 import { ItemService } from 'src/item/item.service';
 import { ItemEntity } from 'src/item/item.entity';
 import { ItemCategoryEntity } from 'src/item-category/item-category.entity';

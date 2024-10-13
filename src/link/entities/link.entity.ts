@@ -1,94 +1,58 @@
 import { MainEntity } from 'src/main-classes/mainEntity';
 import { StoreEntity } from 'src/store/store.entity';
-import { Column, Entity, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { HeaderEntity } from './header.entity';
+import { HeroEntity } from './hero.entity';
+import { SectionEntity, sectionsTypes } from './section.entity';
+import { FooterEntity } from './footer.entity';
+import { SocialLinksEntity } from './social-links.entity';
 
-export enum sectionsTypes {
-  deals_of_the_day = 'deals_of_the_day',
-  manually_selected = 'manually_selected',
-  category_related = 'category_related',
-}
 @Entity('links')
 export class LinkEntity extends MainEntity {
-  @Column('jsonb', { nullable: false })
-  header: {
-    links: {
-      instagram: string;
-      facebook: string;
-      twitter: string;
-    };
-    logo: string;
-    logoSize: number;
-    shippingFee: string;
-  };
+  @OneToOne(() => HeaderEntity, { cascade: true, eager: true })
+  @JoinColumn()
+  header: HeaderEntity;
 
-  @Column('jsonb', { nullable: false })
-  Hero: {
-    Carousel: {
-      id: string;
-      text1: string;
-      text2: string;
-      text3: string;
-      text4: string;
-      backgroundImage: string;
-      link: {
-        title: string;
-        target: string;
-      };
-    }[];
-    sideBoxes: {
-      id: string;
-      backgroundImage: string;
-      text1: string;
-      text2: string;
-      text3: string;
-      link: {
-        title: string;
-        target: string;
-      };
-    }[];
-  };
+  @OneToOne(() => HeroEntity, { cascade: true, eager: true })
+  @JoinColumn()
+  hero: HeroEntity;
 
-  @Column('jsonb', { nullable: false })
+  @Column('text', { array: true, nullable: false })
   categoryItems: string[];
 
-  @Column('jsonb', { nullable: false })
-  sections: {
-    id: string;
-    title: string;
-    categoryId: string;
-    items: string[];
-    type: sectionsTypes;
-    advertisementSection: {
-      backgroundImage: string;
-      id: string;
-      text1: string;
-      text2: string;
-      redText: string;
-      link: {
-        title: string;
-        target: string;
-      };
-    }[];
-  }[];
+  @OneToMany(() => SectionEntity, (section) => section.link, {
+    cascade: true,
+    eager: true,
+  })
+  sections: SectionEntity[];
 
-  @Column('jsonb', { nullable: false })
-  footer: {
-    descriptionText: string;
-  };
+  @OneToOne(() => FooterEntity, { cascade: true, eager: true })
+  @JoinColumn()
+  footer: FooterEntity;
 
   @OneToOne(() => StoreEntity, (store) => store.link)
   store: StoreEntity;
 }
-const defaultHeader = {
+
+export const defaultHeader = {
   links: {
     instagram: '',
     facebook: '',
     twitter: '',
   },
   logo: '7c732995-436b-44cc-953c-eb986dc8e5ed',
+  logoSize: 100,
   shippingFee: 'Free Express Shipping',
 };
-const defaultHero = {
+export const defaultHero = {
   Carousel: [
     {
       id: '1',
@@ -128,22 +92,23 @@ const defaultHero = {
     },
   ],
 };
-const defaultCategoryItems = [];
-const defaultSections = [
+export const defaultCategoryItems = [];
+export const defaultSections = [
   {
     id: '1',
-    title: '',
+    title: 'section 1',
     categoryId: '',
     type: sectionsTypes.deals_of_the_day,
     advertisementSection: [
       {
         id: '1',
-        text1: '',
-        text2: '',
-        redText: '',
+        text1: 'NEW ARRIVALS',
+        text2: 'SKI CLOTHES SALE',
+        redText: 'Up to 35% Off',
+        backgroundImage: '3284596c-1b36-496e-8e60-d53a8a186237',
         link: {
-          title: '',
-          target: '',
+          title: 'SHOP NOW',
+          target: '#',
         },
       },
     ],
@@ -151,7 +116,7 @@ const defaultSections = [
   },
   {
     id: '2',
-    title: '',
+    title: 'section 2',
     categoryId: '',
     type: sectionsTypes.manually_selected,
     items: [],
@@ -159,14 +124,14 @@ const defaultSections = [
   },
   {
     id: '3',
-    title: '',
+    title: 'section 3',
     categoryId: 'e3771f0d-19f8-4213-b0cd-5871bca515be',
     type: sectionsTypes.category_related,
     items: null,
     advertisementSection: null,
   },
 ];
-const defaultFooter = {
+export const defaultFooter = {
   descriptionText: '',
 };
 export const allDefault = {

@@ -23,10 +23,7 @@ export class OrdersService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async createOrder(
-    data: CreateOrderDto,
-    user: UserEntity,
-  ): Promise<CreatedOrderDto> {
+  async createOrder(data: CreateOrderDto, user: UserEntity) {
     const checkStore = await this.itemRepository.findOne({
       where: {
         store: {
@@ -118,7 +115,7 @@ export class OrdersService {
     }
   }
 
-  async getOrders(): Promise<CreatedOrderDto[]> {
+  async getOrders() {
     const orders = await this.orderRepository.find({
       relations: {
         store: true,
@@ -143,10 +140,7 @@ export class OrdersService {
     };
   }
 
-  async updateOrderStatus(
-    id: string,
-    status: OrderStatus,
-  ): Promise<CreatedOrderDto> {
+  async updateOrderStatus(id: string, status: OrderStatus) {
     const order = await this.orderRepository.findOne({
       where: {
         id,
@@ -159,7 +153,7 @@ export class OrdersService {
     return await this.orderRepository.save(order);
   }
 
-  async getUserOrders(user: UserEntity): Promise<CreatedOrderDto[]> {
+  async getUserOrders(user: UserEntity) {
     const orders = await this.orderRepository.find({
       where: {},
       relations: {

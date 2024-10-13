@@ -323,4 +323,15 @@ export class LinkController {
       categoryId,
     );
   }
+
+  @Patch('create-default-link/:storeId')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: CreatedLinkDto,
+  })
+  async generateDefaultLink(@Param('storeId') storeId: string) {
+    return await this.linkService.createDefaultLink(storeId);
+  }
 }

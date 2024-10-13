@@ -20,9 +20,7 @@ export class ItemSubCategoryService {
     private readonly itemService: ItemService,
   ) {}
 
-  async createItemSubCategory(
-    data: createItemSubCategoryDto,
-  ): Promise<CreatedItemSubCategoryDto> {
+  async createItemSubCategory(data: createItemSubCategoryDto) {
     const checkItemCategory = await this.itemCategoryRepository.findOne({
       where: { id: data.category },
       relations: {
@@ -43,9 +41,7 @@ export class ItemSubCategoryService {
     return newItemSubCategory;
   }
 
-  async getItemSubCategoryByStoreId(
-    storeId: string,
-  ): Promise<CreatedItemSubCategoryDto[]> {
+  async getItemSubCategoryByStoreId(storeId: string) {
     const itemSubCategory = await this.itemSubCategoryRepository.find({
       where: {
         store: {
@@ -77,10 +73,7 @@ export class ItemSubCategoryService {
     return { message: 'Item Sub Category deleted successfully' };
   }
 
-  async editItemSubCategory(
-    subCategoryId: string,
-    data: EditSubCategoryDto,
-  ): Promise<CreatedItemSubCategoryDto> {
+  async editItemSubCategory(subCategoryId: string, data: EditSubCategoryDto) {
     const itemSubCategory = await this.itemSubCategoryRepository.findOne({
       where: {
         id: subCategoryId,

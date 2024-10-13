@@ -7,7 +7,7 @@ import { MediaService } from 'src/media/media.service';
 import { UserEntity } from 'src/user/user.entity';
 import { Response } from 'express';
 import { BadRequestException } from 'src/error/bad-request-error';
-import { allDefault, LinkEntity } from 'src/link/link.entity';
+import { allDefault, LinkEntity } from 'src/link/entities/link.entity';
 import { CreatedStoreDto } from './dtos/res/created-store.dto';
 import { CreatedLinkDto } from 'src/link/dtos/res/created-link.dto';
 import { OrderEntity } from 'src/orders/orders.entity';
@@ -33,7 +33,7 @@ export class StoreService {
     data: CreateStoreDto,
     logo: Express.Multer.File,
     user: UserEntity,
-  ): Promise<CreatedStoreDto> {
+  ) {
     const uploadLogo = await this.mediaService.upload(logo, user.id);
     try {
       const createStore = this.storeRepository.create({
@@ -70,13 +70,24 @@ export class StoreService {
         //   items: true,
         categories: true,
         //   subCategories: true,
-        link: true,
+        link: {
+          footer: true,
+          header: true,
+          sections: {
+            link: true,
+          },
+          hero: {
+            carousel: true,
+            sideBoxes: true,
+          },
+        },
         //   user: true,
       },
     });
     if (!store) {
       throw new BadRequestException('Store not found');
     }
+    console.log('this is the store', store);
     return store;
   }
 
