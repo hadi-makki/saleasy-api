@@ -40,14 +40,15 @@ import { UpdateManualSelectedItemsDto } from './dtos/req/update-manual-selected-
 export class LinkController {
   constructor(private readonly linkService: LinkService) {}
 
-  @Post('create')
-  // @ApiBearerAuth()
-  // @ApiCreatedResponse({
-  //   description: 'The record has been successfully created.',
-  //   type: CreatedLinkDto,
-  // })
-  async createLink() {
-    return this.linkService.createLink();
+  @Post('create/:storeId')
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: CreatedLinkDto,
+  })
+  @UseGuards(AdminAuthGuard)
+  async createLink(@Param('storeId') storeId: string) {
+    return this.linkService.createLink(storeId);
   }
 
   @Patch('update-header/:storeId')

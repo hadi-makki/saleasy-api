@@ -79,16 +79,18 @@ export class LinkEntity extends MainEntity {
   @OneToOne(() => StoreEntity, (store) => store.link)
   store: StoreEntity;
 }
-const defaultHeader = {
+
+export const defaultHeader = {
   links: {
     instagram: '',
     facebook: '',
     twitter: '',
   },
-  logo: '7c732995-436b-44cc-953c-eb986dc8e5ed',
+  logo: '62df0584-a4b0-4dcd-90e0-dcf530fbdf81',
+  logoSize: 100,
   shippingFee: 'Free Express Shipping',
 };
-const defaultHero = {
+export const defaultHero = {
   Carousel: [
     {
       id: '1',
@@ -128,22 +130,23 @@ const defaultHero = {
     },
   ],
 };
-const defaultCategoryItems = [];
-const defaultSections = [
+export const defaultCategoryItems = [];
+export const defaultSections = [
   {
     id: '1',
-    title: '',
+    title: 'section 1',
     categoryId: '',
     type: sectionsTypes.deals_of_the_day,
     advertisementSection: [
       {
         id: '1',
-        text1: '',
-        text2: '',
-        redText: '',
+        text1: 'NEW ARRIVALS',
+        text2: 'SKI CLOTHES SALE',
+        redText: 'Up to 35% Off',
+        backgroundImage: '3284596c-1b36-496e-8e60-d53a8a186237',
         link: {
-          title: '',
-          target: '',
+          title: 'SHOP NOW',
+          target: '#',
         },
       },
     ],
@@ -151,22 +154,22 @@ const defaultSections = [
   },
   {
     id: '2',
-    title: '',
+    title: 'section 2',
     categoryId: '',
     type: sectionsTypes.manually_selected,
     items: [],
-    advertisementSection: null,
+    advertisementSection: [],
   },
   {
     id: '3',
-    title: '',
+    title: 'section 3',
     categoryId: 'e3771f0d-19f8-4213-b0cd-5871bca515be',
     type: sectionsTypes.category_related,
     items: null,
-    advertisementSection: null,
+    advertisementSection: [],
   },
 ];
-const defaultFooter = {
+export const defaultFooter = {
   descriptionText: '',
 };
 export const allDefault = {

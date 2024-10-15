@@ -31,9 +31,9 @@ export class LinkService {
     @InjectRepository(ItemCategoryEntity)
     private itemCategoryRepository: Repository<ItemCategoryEntity>,
   ) {}
-  async createLink() {
+  async createLink(storeId: string) {
     const getStore = await this.storeRepository.findOne({
-      where: { id: 'aecca3e4-23c4-4c1e-92ff-d9dabb1517df' },
+      where: { id: storeId },
     });
     const link = this.linkRepository.create({
       ...allDefault,
@@ -98,7 +98,11 @@ export class LinkService {
       text4: data.text4,
     };
 
-    getLink.Hero.Carousel.push(itemToAdd);
+    if (getLink.Hero.Carousel && getLink.Hero.Carousel.length) {
+      getLink.Hero.Carousel.push(itemToAdd);
+    } else {
+      getLink.Hero.Carousel = [itemToAdd];
+    }
     await this.linkRepository.save(getLink);
 
     return itemToAdd;
@@ -404,7 +408,14 @@ export class LinkService {
       redText: data.redText,
     };
 
-    sectionToUpdate.advertisementSection.push(advertisementSectionToAdd);
+    if (
+      sectionToUpdate.advertisementSection &&
+      sectionToUpdate.advertisementSection.length
+    ) {
+      sectionToUpdate.advertisementSection.push(advertisementSectionToAdd);
+    } else {
+      sectionToUpdate.advertisementSection = [advertisementSectionToAdd];
+    }
 
     await this.linkRepository.save(getLink);
 

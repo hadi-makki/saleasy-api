@@ -100,6 +100,31 @@ export class ItemCategoryController {
     return this.itemCategory.updateCategoryName(id, name);
   }
 
+  @Patch('update-category-image/:id')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image'))
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+  })
+  async updateCategoryImage(
+    @Param('id') id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB
+          new FileTypeValidator({ fileType: 'image/*' }),
+        ],
+        fileIsRequired: true,
+      }),
+    )
+    image: Express.Multer.File,
+    @User() user: UserEntity,
+  ) {
+    return this.itemCategory.updateCategoryImage(id, image, user);
+  }
+
   @Get()
   @ApiOkResponse({
     description: 'The record has been successfully fetched.',

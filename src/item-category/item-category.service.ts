@@ -105,4 +105,24 @@ export class ItemCategoryService {
       where: { store: { id: storeId } },
     });
   }
+
+  async updateCategoryImage(
+    categoryId: string,
+    image: Express.Multer.File,
+    user: UserEntity,
+  ): Promise<SuccessMessageReturn> {
+    const category = await this.itemCategoryRepository.findOne({
+      where: { id: categoryId },
+    });
+    if (!category) {
+      throw new BadRequestException('Category not found');
+    }
+    const uploadedImage = await this.mediaService.upload(image, user.id);
+    await this.mediaService.delete(category.image);
+    category.image = uploadedImage.id;
+    await this.itemCategoryRepository.save(category);
+    return {
+      message: 'Category image updated successfully',
+    };
+  }
 }
