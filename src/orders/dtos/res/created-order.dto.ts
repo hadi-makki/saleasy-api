@@ -30,6 +30,8 @@ class orderOptions {
   item: string;
   @ApiProperty()
   quantity: number;
+  @ApiProperty()
+  order: any;
 }
 export class CreatedOrderDto extends MainDto {
   @ApiProperty({ type: CreatedStoreDto })

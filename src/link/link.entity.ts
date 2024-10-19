@@ -76,6 +76,27 @@ export class LinkEntity extends MainEntity {
     descriptionText: string;
   };
 
+  @Column('jsonb', {
+    nullable: false,
+    default: {
+      colors: {
+        primary: '#2b3445',
+        secondary: '#ffffff',
+        success: '#72e128',
+        error: '#d23f57',
+      },
+    },
+  })
+  theme: {
+    colors: {
+      primary: string;
+      secondary: string;
+      success: string;
+      warning: string;
+      error: string;
+    };
+  };
+
   @OneToOne(() => StoreEntity, (store) => store.link)
   store: StoreEntity;
 }

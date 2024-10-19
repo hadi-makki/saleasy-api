@@ -2,6 +2,7 @@ import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
 
 import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
+import { OrderOptionsEntity } from 'src/orders/order-options.entity';
 import { OrderEntity } from 'src/orders/orders.entity';
 import { StoreEntity } from 'src/store/store.entity';
 import {
@@ -63,4 +64,7 @@ export class ItemEntity extends MainEntity {
   @ManyToMany(() => OrderEntity, (order) => order.items)
   @JoinTable()
   orders: OrderEntity[];
+
+  @OneToMany(() => OrderOptionsEntity, (orderOptions) => orderOptions.item)
+  orderOptions: OrderOptionsEntity[];
 }

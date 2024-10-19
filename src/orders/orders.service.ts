@@ -9,6 +9,7 @@ import { CreatedOrderDto } from './dtos/res/created-order.dto';
 import { NotFoundException } from 'src/error/not-found-error';
 import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
 import { StoreEntity } from 'src/store/store.entity';
+import { OrderOptionsEntity } from './order-options.entity';
 
 @Injectable()
 export class OrdersService {
@@ -21,12 +22,11 @@ export class OrdersService {
     private readonly storeRepository: Repository<StoreEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(OrderOptionsEntity)
+    private readonly orderOptionsRepository: Repository<OrderOptionsEntity>,
   ) {}
 
-  async createOrder(
-    data: CreateOrderDto,
-    user: UserEntity,
-  ): Promise<CreatedOrderDto> {
+  async createOrder(data: CreateOrderDto, user: UserEntity) {
     const checkStore = await this.itemRepository.findOne({
       where: {
         store: {
@@ -45,6 +45,7 @@ export class OrdersService {
       return {
         options: item.options,
         item: item.id,
+        quantity: item.quantity,
       };
     });
     const items = await this.itemRepository.find({
@@ -58,6 +59,17 @@ export class OrdersService {
       return acc + item.price * itemData.quantity;
     }, 0);
 
+    const createOrderOptions = orderOptions.map((option) => {
+      const orderOption = this.orderOptionsRepository.create({
+        options: option.options,
+        item: {
+          id: option.item,
+        },
+        quantity: option.quantity,
+      });
+      return orderOption;
+    });
+
     const createOrder = this.orderRepository.create({
       items: items,
       store: {
@@ -65,7 +77,7 @@ export class OrdersService {
       },
       user,
       total: total,
-      orderOptions,
+      orderOptions: createOrderOptions,
       shippingInfo: data.shippingInfo,
     });
     const checkIsCustomer = await this.storeRepository.findOne({
@@ -118,7 +130,7 @@ export class OrdersService {
     }
   }
 
-  async getOrders(): Promise<CreatedOrderDto[]> {
+  async getOrders() {
     const orders = await this.orderRepository.find({
       relations: {
         store: true,
@@ -143,10 +155,7 @@ export class OrdersService {
     };
   }
 
-  async updateOrderStatus(
-    id: string,
-    status: OrderStatus,
-  ): Promise<CreatedOrderDto> {
+  async updateOrderStatus(id: string, status: OrderStatus) {
     const order = await this.orderRepository.findOne({
       where: {
         id,
@@ -159,7 +168,7 @@ export class OrdersService {
     return await this.orderRepository.save(order);
   }
 
-  async getUserOrders(user: UserEntity): Promise<CreatedOrderDto[]> {
+  async getUserOrders(user: UserEntity) {
     const orders = await this.orderRepository.find({
       where: {},
       relations: {
@@ -168,5 +177,66 @@ export class OrdersService {
       },
     });
     return orders;
+  }
+
+  async getStoreOrders(id: string, user: UserEntity) {
+    const checkIfStoreValid = await this.storeRepository.findOne({
+      where: {
+        id,
+        user: {
+          id: user.id,
+        },
+      },
+    });
+    console.log('check user id', checkIfStoreValid);
+    console.log('store id', id);
+    if (!checkIfStoreValid) {
+      throw new NotFoundException('Store not found');
+    }
+    const orders = await this.orderRepository.find({
+      where: {
+        store: {
+          id,
+        },
+      },
+      relations: {
+        orderOptions: {
+          item: true,
+        },
+        user: true,
+      },
+      select: {
+        id: true,
+        total: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        orderOptions: {
+          id: true,
+          options: true,
+          quantity: true,
+          item: {
+            id: true,
+            name: true,
+            price: true,
+            description: true,
+          },
+        },
+        user: {
+          id: true,
+          email: true,
+          name: true,
+        },
+      },
+    });
+
+    return orders.map((order) => {
+      return {
+        ...order,
+        userName: order.user.name,
+        userEmail: order.user.email,
+        userId: order.user.id,
+      };
+    });
   }
 }

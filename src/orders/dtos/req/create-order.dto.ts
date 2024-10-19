@@ -6,6 +6,7 @@ import {
   IsEnum,
   IsArray,
   ValidateNested,
+  IsNumber,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -52,7 +53,7 @@ export class Item {
   id: string;
 
   @ApiProperty()
-  @IsInt()
+  @IsNumber()
   quantity: number;
 
   @ApiProperty({ type: [OrderOption] })

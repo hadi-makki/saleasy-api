@@ -10,6 +10,7 @@ import { TokenService } from 'src/token/token.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { StoreEntity } from 'src/store/store.entity';
+import { OrderOptionsEntity } from './order-options.entity';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { StoreEntity } from 'src/store/store.entity';
       UserEntity,
       TokenEntity,
       StoreEntity,
+      OrderOptionsEntity,
     ]),
   ],
   controllers: [OrdersController],

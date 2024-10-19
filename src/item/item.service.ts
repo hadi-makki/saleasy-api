@@ -219,16 +219,21 @@ export class ItemService {
     sorting: [string, 'ASC' | 'DESC'][];
     storeId: string;
   }) {
+    console.log('this is the number and limit', page, limit);
+
     const query: PaginateQuery = {
-      limit: limit,
-      page: page,
+      limit: isNaN(page) ? 10 : Number(limit),
+      page: isNaN(page) ? 1 : Number(page),
       sortBy: sorting,
       path: 'users',
     };
 
     console.log(limit, page, sorting);
 
-    const filterableColumns: any = {
+    const filterableColumns: Record<
+      string,
+      true | (FilterOperator | FilterSuffix)[]
+    > = {
       name: [FilterOperator.EQ, FilterOperator.CONTAINS], // Filter by name
       age: true, // Assuming age is a filterable column
       price: [FilterOperator.GT, FilterOperator.LT], // Filter by price
@@ -244,7 +249,7 @@ export class ItemService {
     });
 
     // Log the filter query to check its structure
-    const config: any = {
+    const config: PaginateConfig<ItemEntity> = {
       sortableColumns: ['id', 'name', 'createdAt', 'price'],
       nullSort: 'last',
       defaultSortBy: [['createdAt', 'ASC']],

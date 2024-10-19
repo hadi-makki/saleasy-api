@@ -84,4 +84,13 @@ export class OrdersController {
   ) {
     return this.ordersService.updateOrderStatus(id, status);
   }
+
+  @Get('get-store-orders/:id')
+  @UseGuards(AdminAuthGuard)
+  @ApiOkResponse({
+    type: [CreatedOrderDto],
+  })
+  async getStoreOrders(@Param('id') id: string, @User() user: UserEntity) {
+    return this.ordersService.getStoreOrders(id, user);
+  }
 }

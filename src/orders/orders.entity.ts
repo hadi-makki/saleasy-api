@@ -2,7 +2,8 @@ import { ItemEntity } from 'src/item/item.entity';
 import { MainEntity } from 'src/main-classes/mainEntity';
 import { StoreEntity } from 'src/store/store.entity';
 import { UserEntity } from 'src/user/user.entity';
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { OrderOptionsEntity } from './order-options.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -36,15 +37,12 @@ export class OrderEntity extends MainEntity {
   @Column('float', { nullable: false })
   total: number;
 
-  @Column('jsonb', { nullable: true })
-  orderOptions: {
-    options: {
-      key: string;
-      value: string;
-    }[];
-    item: string;
-    quantity: number;
-  }[];
+  @OneToMany(() => OrderOptionsEntity, (orderOptions) => orderOptions.order, {
+    nullable: false,
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
+  orderOptions: OrderOptionsEntity[];
 
   @Column('jsonb', { nullable: true })
   shippingInfo: {
