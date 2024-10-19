@@ -574,4 +574,33 @@ export class LinkService {
 
     return getCategoryRelatedItems;
   }
+
+  async updateLinkColors(
+    storeId: string,
+    colors: {
+      primary: string;
+      error: string;
+    },
+  ) {
+    console.log('updateLinkColors');
+    console.log(storeId, colors);
+    const store = await this.storeRepository.findOne({
+      where: {
+        id: storeId,
+      },
+      relations: {
+        link: true,
+      },
+    });
+
+    if (!store.link) {
+      throw new NotFoundException('Link not found');
+    }
+    store.link.theme.colors.primary = colors.primary;
+    store.link.theme.colors.error = colors.error;
+
+    console.log(store.link);
+    await this.linkRepository.save(store.link);
+    return store.link.theme.colors;
+  }
 }

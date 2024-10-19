@@ -34,6 +34,7 @@ import { UpdateAdvertismentSectionDto } from './dtos/req/update-advertisment-sec
 import { CreateAddSectionDto } from './dtos/req/create-ad-section.dto';
 import { UpdateSectionNameDto } from './dtos/req/update-section-name';
 import { UpdateManualSelectedItemsDto } from './dtos/req/update-manual-selected-items.dto';
+import { UpdateLinkColorsDto } from './dtos/req/update-link-colors.dto';
 
 @Controller('link')
 @ApiTags('Link')
@@ -323,5 +324,19 @@ export class LinkController {
       sectionId,
       categoryId,
     );
+  }
+
+  @Patch('update-link-colors/:storeId')
+  @ApiBearerAuth()
+  @UseGuards(AdminAuthGuard)
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: CreatedLinkDto,
+  })
+  async updateLinkColors(
+    @Body() colors: UpdateLinkColorsDto,
+    @Param('storeId') storeId: string,
+  ) {
+    return await this.linkService.updateLinkColors(storeId, colors);
   }
 }
