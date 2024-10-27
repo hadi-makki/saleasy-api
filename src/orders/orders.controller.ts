@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -14,6 +15,7 @@ import {
   ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -28,6 +30,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { CreatedOrderDto } from './dtos/res/created-order.dto';
 import { UpdateOrderStatus } from './dtos/req/update-order-status';
 import { AdminAuthGuard } from 'src/guards/admin.guard';
+import { OrderStatus } from './orders.entity';
 
 @Controller('orders')
 @ApiTags('orders')
@@ -73,16 +76,17 @@ export class OrdersController {
     return this.ordersService.deleteOrder(id);
   }
 
-  @Patch('update-status/:id')
-  @UseGuards(AuthGuard)
+  @Put('update-status/:id')
+  @UseGuards(AdminAuthGuard)
   @ApiOkResponse({
     type: CreatedOrderDto,
   })
   async updateOrderStatus(
     @Param('id') id: string,
     @Body() { status }: UpdateOrderStatus,
+    @User() user: UserEntity,
   ) {
-    return this.ordersService.updateOrderStatus(id, status);
+    return this.ordersService.updateOrderStatus(id, status, user);
   }
 
   @Get('get-store-orders/:id')
@@ -90,7 +94,25 @@ export class OrdersController {
   @ApiOkResponse({
     type: [CreatedOrderDto],
   })
-  async getStoreOrders(@Param('id') id: string, @User() user: UserEntity) {
-    return this.ordersService.getStoreOrders(id, user);
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    type: 'String',
+  })
+  async getStoreOrders(
+    @Param('id') id: string,
+    @User() user: UserEntity,
+    @Query('status') status: OrderStatus,
+  ) {
+    return this.ordersService.getStoreOrders(id, user, { status });
+  }
+
+  @Get('admin/get-order/:id')
+  @UseGuards(AdminAuthGuard)
+  @ApiOkResponse({
+    type: CreatedOrderDto,
+  })
+  async getOrder(@Param('id') id: string, @User() user: UserEntity) {
+    return this.ordersService.getOrder(id, user);
   }
 }

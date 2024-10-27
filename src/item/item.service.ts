@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
 import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
@@ -29,6 +29,8 @@ import {
 } from 'nestjs-paginate';
 import { FilterPropertiesInterface } from 'src/main-classes/filter-properties.interface';
 import { UpdateItemDto } from './dtos/req/update-item';
+import { OrdersService } from 'src/orders/orders.service';
+import { OrderEntity } from 'src/orders/orders.entity';
 
 @Injectable()
 export class ItemService {
@@ -44,6 +46,8 @@ export class ItemService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     private readonly mediaService: MediaService,
+    @InjectRepository(OrderEntity)
+    private orderRepository: Repository<OrderEntity>,
   ) {}
 
   async createItem({
@@ -293,6 +297,7 @@ export class ItemService {
     if (!getItem) {
       throw new BadRequestException('Item not found');
     }
+    const oldPrice = getItem.price;
     getItem.name = data.name;
     getItem.description = data.description;
     getItem.price = data.price;
@@ -300,6 +305,35 @@ export class ItemService {
     getItem.stock = data.stock;
     getItem.options = data.options;
     await this.itemRepository.save(getItem);
+
+    //update the total of the orders
+    // if (data.price !== oldPrice) {
+    //   const getOrders = await this.orderRepository.find({
+    //     where: {
+    //       items: {
+    //         id: itemId,
+    //       },
+    //     },
+    //     relations: {
+    //       orderOptions: {
+    //         item: true,
+    //       },
+    //     },
+    //   });
+
+    //   getOrders.forEach((order) => {
+    //     console.log('this is the order', order.orderOptions);
+    //     const total = order.orderOptions.map((orderOption) => {
+    //       console.log('this is the order option', orderOption);
+    //       return orderOption.quantity * orderOption.item.price;
+    //     });
+    //     console.log('this is the total', total);
+    //     // console.log('total', total);
+    //     order.total = total.reduce((a, b) => a + b, 0);
+    //     // console.log('order', order);
+    //     this.orderRepository.save(order);
+    //   });
+    // }
     return getItem;
   }
 

@@ -7,6 +7,7 @@ import { OrderOptionsEntity } from './order-options.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',
+  SHIPPING = 'shipping',
   ACCEPTED = 'accepted',
   REJECTED = 'rejected',
 }

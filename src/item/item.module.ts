@@ -14,6 +14,9 @@ import { JwtService } from '@nestjs/jwt';
 import { MediaService } from 'src/media/media.service';
 import { MediaEntity } from 'src/media/media.entity';
 import { S3Service } from 'src/s3/s3.service';
+import { OrdersService } from 'src/orders/orders.service';
+import { OrderEntity } from 'src/orders/orders.entity';
+import { OrderOptionsEntity } from 'src/orders/order-options.entity';
 
 @Module({
   imports: [
@@ -25,6 +28,7 @@ import { S3Service } from 'src/s3/s3.service';
       UserEntity,
       TokenEntity,
       MediaEntity,
+      OrderEntity,
     ]),
   ],
   providers: [

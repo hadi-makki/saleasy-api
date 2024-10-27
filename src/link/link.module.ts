@@ -16,6 +16,7 @@ import { ItemService } from 'src/item/item.service';
 import { ItemEntity } from 'src/item/item.entity';
 import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
 import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
+import { OrderEntity } from 'src/orders/orders.entity';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.e
       ItemEntity,
       ItemCategoryEntity,
       ItemSubCategoryEntity,
+      OrderEntity,
     ]),
   ],
   controllers: [LinkController],

@@ -18,7 +18,7 @@ import {
 
 @Entity('stores')
 export class StoreEntity extends MainEntity {
-  @Column('text', { nullable: false })
+  @Column('text', { nullable: false, unique: true })
   name: string;
 
   @Column('text', { nullable: false })

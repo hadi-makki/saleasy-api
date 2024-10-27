@@ -15,6 +15,7 @@ import { StoreEntity } from 'src/store/store.entity';
 import { MediaService } from 'src/media/media.service';
 import { MediaEntity } from 'src/media/media.entity';
 import { S3Service } from 'src/s3/s3.service';
+import { OrderEntity } from 'src/orders/orders.entity';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { S3Service } from 'src/s3/s3.service';
       ItemEntity,
       ItemEntity,
       StoreEntity,
+      OrderEntity,
       MediaEntity,
     ]),
   ],

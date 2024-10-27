@@ -22,10 +22,10 @@ export class ItemEntity extends MainEntity {
   @Column('text', { nullable: false })
   description: string;
 
-  @Column('int', { nullable: false, default: 0 })
+  @Column('float', { nullable: false, default: 0 })
   price: number;
 
-  @Column('int', { nullable: false, default: 0 })
+  @Column('float', { nullable: false, default: 0 })
   discount: number;
 
   @Column('jsonb', { nullable: false, default: [] })

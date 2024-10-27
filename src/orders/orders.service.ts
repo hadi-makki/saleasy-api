@@ -155,7 +155,21 @@ export class OrdersService {
     };
   }
 
-  async updateOrderStatus(id: string, status: OrderStatus) {
+  async updateOrderStatus(id: string, status: OrderStatus, user: UserEntity) {
+    const checkIfOrderIsFromStore = await this.orderRepository.findOne({
+      where: {
+        id,
+        store: {
+          user: {
+            id: user.id,
+          },
+        },
+      },
+    });
+    if (!checkIfOrderIsFromStore) {
+      throw new NotFoundException('Order not found');
+    }
+
     const order = await this.orderRepository.findOne({
       where: {
         id,
@@ -179,7 +193,11 @@ export class OrdersService {
     return orders;
   }
 
-  async getStoreOrders(id: string, user: UserEntity) {
+  async getStoreOrders(
+    id: string,
+    user: UserEntity,
+    { status }: { status: OrderStatus },
+  ) {
     const checkIfStoreValid = await this.storeRepository.findOne({
       where: {
         id,
@@ -188,8 +206,7 @@ export class OrdersService {
         },
       },
     });
-    console.log('check user id', checkIfStoreValid);
-    console.log('store id', id);
+
     if (!checkIfStoreValid) {
       throw new NotFoundException('Store not found');
     }
@@ -198,6 +215,7 @@ export class OrdersService {
         store: {
           id,
         },
+        ...(status && { status }),
       },
       relations: {
         orderOptions: {
@@ -238,5 +256,91 @@ export class OrdersService {
         userId: order.user.id,
       };
     });
+  }
+
+  async updateOrdersTotalByItemId(itemId: string) {
+    const getOrders = await this.orderRepository.find({
+      where: {
+        items: {
+          id: itemId,
+        },
+      },
+      relations: {
+        items: true,
+      },
+    });
+
+    getOrders.forEach((order) => {
+      const total = order.items
+        .map((item) => {
+          return item.price;
+        })
+        .reduce((acc, price) => {
+          return acc + price;
+        });
+      order.total = total;
+      console.log('order', order);
+      this.orderRepository.save(order);
+    });
+
+    return {
+      message: 'Orders updated successfully',
+    };
+  }
+
+  async getOrder(id: string, user: UserEntity) {
+    const checkifOrderIsFromStore = await this.orderRepository.findOne({
+      where: {
+        id,
+        store: {
+          user: {
+            id: user.id,
+          },
+        },
+      },
+    });
+    if (!checkifOrderIsFromStore) {
+      throw new NotFoundException('Order not found');
+    }
+    const order = await this.orderRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        orderOptions: {
+          item: true,
+        },
+      },
+      select: {
+        id: true,
+        status: true,
+        createdAt: true,
+        total: true,
+        shippingInfo: {
+          name: true,
+          country: true,
+          company: true,
+          address: true,
+          city: true,
+          method: true,
+        },
+        orderOptions: {
+          id: true,
+          options: true,
+          quantity: true,
+          item: {
+            images: true,
+            id: true,
+            name: true,
+            price: true,
+            description: true,
+          },
+        },
+      },
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    return order;
   }
 }
