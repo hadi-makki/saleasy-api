@@ -5,7 +5,6 @@ import { CreateOrderDto } from './dtos/req/create-order.dto';
 import { In, Repository } from 'typeorm';
 import { ItemEntity } from 'src/item/item.entity';
 import { UserEntity } from 'src/user/user.entity';
-import { CreatedOrderDto } from './dtos/res/created-order.dto';
 import { NotFoundException } from 'src/error/not-found-error';
 import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
 import { StoreEntity } from 'src/store/store.entity';
