@@ -1,5 +1,5 @@
-import { MainEntity } from 'src/main-classes/mainEntity';
-import { StoreEntity } from 'src/store/store.entity';
+import { MainEntity } from '../main-classes/mainEntity';
+import { StoreEntity } from '../store/store.entity';
 import { Column, Entity, OneToOne } from 'typeorm';
 
 export enum sectionsTypes {

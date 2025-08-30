@@ -6,11 +6,11 @@ import { addDays } from 'date-fns';
 import { Repository } from 'typeorm';
 import { GenerateTokenDTO } from './token.dto';
 import TokenEntity from './token.entity';
-import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
-import { NotFoundException } from 'src/error/not-found-error';
-import { UserEntity } from 'src/user/user.entity';
+import { SuccessMessageReturn } from '../main-classes/success-message-return';
+import { NotFoundException } from '../error/not-found-error';
+import { UserEntity } from '../user/user.entity';
 import { NextFunction, Request, Response } from 'express';
-import { UnauthorizedException } from 'src/error/unauthorized-error';
+import { UnauthorizedException } from '../error/unauthorized-error';
 
 @Injectable()
 export class TokenService {

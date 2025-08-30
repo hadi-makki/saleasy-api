@@ -21,15 +21,15 @@ import {
 import {
   ApiInternalServerErrorResponse,
   ApiUnauthorizedResponse,
-} from 'src/error/api-responses.decorator';
+} from '../error/api-responses.decorator';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dtos/req/create-order.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { User } from 'src/decorators/users.decorator';
-import { UserEntity } from 'src/user/user.entity';
+import { AuthGuard } from '../guards/auth.guard';
+import { User } from '../decorators/users.decorator';
+import { UserEntity } from '../user/user.entity';
 import { CreatedOrderDto } from './dtos/res/created-order.dto';
 import { UpdateOrderStatus } from './dtos/req/update-order-status';
-import { AdminAuthGuard } from 'src/guards/admin.guard';
+import { AdminAuthGuard } from '../guards/admin.guard';
 import { OrderStatus } from './orders.entity';
 
 @Controller('orders')

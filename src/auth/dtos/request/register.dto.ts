@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsStrongPassword } from 'class-validator';
-import { CustomPhoneValidator } from 'src/decorators/custom-phonr-number-validator';
+import { CustomPhoneValidator } from '../../../decorators/custom-phonr-number-validator';
 
 export class RegisterDto {
   @ApiProperty()

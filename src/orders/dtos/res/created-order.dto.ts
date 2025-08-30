@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreatedItemDto } from 'src/item/dtos/res/created-item.dto';
-import { MainDto } from 'src/main-classes/main-dto';
-import { CreatedStoreDto } from 'src/store/dtos/res/created-store.dto';
+import { CreatedItemDto } from '../../../item/dtos/res/created-item.dto';
+import { MainDto } from '../../../main-classes/main-dto';
+import { CreatedStoreDto } from '../../../store/dtos/res/created-store.dto';
 
 class option {
   @ApiProperty()

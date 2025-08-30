@@ -27,15 +27,15 @@ import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
-} from 'src/error/api-responses.decorator';
-import { AdminAuthGuard } from 'src/guards/admin.guard';
+} from '../error/api-responses.decorator';
+import { AdminAuthGuard } from '../guards/admin.guard';
 import { CreateStoreDto } from './dtos/req/create-store.dto';
 import { StoreService } from './store.service';
-import { User } from 'src/decorators/users.decorator';
-import { UserEntity } from 'src/user/user.entity';
+import { User } from '../decorators/users.decorator';
+import { UserEntity } from '../user/user.entity';
 import { Response } from 'express';
 import { CreatedStoreDto } from './dtos/res/created-store.dto';
-import { ItemService } from 'src/item/item.service';
+import { ItemService } from '../item/item.service';
 import { ILike } from 'typeorm';
 @Controller('store')
 @ApiTags('Store')

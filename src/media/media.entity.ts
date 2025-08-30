@@ -1,4 +1,4 @@
-import { MainEntity } from 'src/main-classes/mainEntity';
+import { MainEntity } from '../main-classes/mainEntity';
 import { Column, Entity, PrimaryColumn, ManyToOne } from 'typeorm';
 
 @Entity('media')

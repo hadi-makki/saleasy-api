@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
-import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
-import { StoreEntity } from 'src/store/store.entity';
-import { UserEntity } from 'src/user/user.entity';
+import { ItemCategoryEntity } from '../item-category/item-category.entity';
+import { ItemSubCategoryEntity } from '../item-sub-category/item-sub-category.entity';
+import { StoreEntity } from '../store/store.entity';
+import { UserEntity } from '../user/user.entity';
 import {
   In,
   LessThanOrEqual,
@@ -13,10 +13,10 @@ import {
   Repository,
 } from 'typeorm';
 import { ItemEntity } from './item.entity';
-import { BadRequestException } from 'src/error/bad-request-error';
+import { BadRequestException } from '../error/bad-request-error';
 import { CreateItemDto } from './dtos/req/create-item.dto';
-import { MediaService } from 'src/media/media.service';
-import { sectionsTypes } from 'src/link/link.entity';
+import { MediaService } from '../media/media.service';
+import { sectionsTypes } from '../link/link.entity';
 import { isUUID } from 'class-validator';
 import {
   FilterOperator,
@@ -27,10 +27,10 @@ import {
   Paginated,
   PaginateConfig,
 } from 'nestjs-paginate';
-import { FilterPropertiesInterface } from 'src/main-classes/filter-properties.interface';
+import { FilterPropertiesInterface } from '../main-classes/filter-properties.interface';
 import { UpdateItemDto } from './dtos/req/update-item';
-import { OrdersService } from 'src/orders/orders.service';
-import { OrderEntity } from 'src/orders/orders.entity';
+import { OrdersService } from '../orders/orders.service';
+import { OrderEntity } from '../orders/orders.entity';
 
 @Injectable()
 export class ItemService {

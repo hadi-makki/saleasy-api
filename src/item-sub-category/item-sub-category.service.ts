@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BadRequestException } from 'src/error/bad-request-error';
-import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
-import { ItemService } from 'src/item/item.service';
-import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
+import { BadRequestException } from '../error/bad-request-error';
+import { ItemCategoryEntity } from '../item-category/item-category.entity';
+import { ItemService } from '../item/item.service';
+import { SuccessMessageReturn } from '../main-classes/success-message-return';
 import { Repository } from 'typeorm';
 import { createItemSubCategoryDto } from './dtos/req/create-item-sub-category.dto';
 import { EditSubCategoryDto } from './dtos/req/edit-sub-category.dto';

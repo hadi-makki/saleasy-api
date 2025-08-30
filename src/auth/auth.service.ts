@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { LoginDto } from './dtos/request/login.dto';
-import { TokenService } from 'src/token/token.service';
+import { TokenService } from '../token/token.service';
 import { UserCreatedDto } from './dtos/response/user-created.dto';
-import { UserService } from 'src/user/user.service';
-import { NotFoundException } from 'src/error/not-found-error';
-import { BadRequestException } from 'src/error/bad-request-error';
-import { returnUser } from 'src/utils/helprt-functions';
+import { UserService } from '../user/user.service';
+import { NotFoundException } from '../error/not-found-error';
+import { BadRequestException } from '../error/bad-request-error';
+import { returnUser } from '../utils/helprt-functions';
 import { RegisterDto } from './dtos/request/register.dto';
 
 @Injectable()

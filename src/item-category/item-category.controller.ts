@@ -21,18 +21,18 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
   ApiUnauthorizedResponse,
-} from 'src/error/api-responses.decorator';
+} from '../error/api-responses.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { createItemCategoryDto } from './dtos/req/create-item-category.dto';
-import { User } from 'src/decorators/users.decorator';
-import { UserEntity } from 'src/user/user.entity';
+import { User } from '../decorators/users.decorator';
+import { UserEntity } from '../user/user.entity';
 import { CreatedItemCategoryDto } from './dtos/res/created-item-category.dto';
-import { AdminAuthGuard } from 'src/guards/admin.guard';
+import { AdminAuthGuard } from '../guards/admin.guard';
 
 @Controller('item-category')
 @ApiTags('Item Category')

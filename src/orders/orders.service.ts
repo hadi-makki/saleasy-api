@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity, OrderStatus } from './orders.entity';
 import { CreateOrderDto } from './dtos/req/create-order.dto';
 import { In, Repository } from 'typeorm';
-import { ItemEntity } from 'src/item/item.entity';
-import { UserEntity } from 'src/user/user.entity';
-import { NotFoundException } from 'src/error/not-found-error';
-import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
-import { StoreEntity } from 'src/store/store.entity';
+import { ItemEntity } from '../item/item.entity';
+import { UserEntity } from '../user/user.entity';
+import { NotFoundException } from '../error/not-found-error';
+import { SuccessMessageReturn } from '../main-classes/success-message-return';
+import { StoreEntity } from '../store/store.entity';
 import { OrderOptionsEntity } from './order-options.entity';
 
 @Injectable()

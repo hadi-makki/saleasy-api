@@ -1,5 +1,5 @@
-import { ItemEntity } from 'src/item/item.entity';
-import { MainEntity } from 'src/main-classes/mainEntity';
+import { ItemEntity } from '../item/item.entity';
+import { MainEntity } from '../main-classes/mainEntity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { OrderEntity } from './orders.entity';
 

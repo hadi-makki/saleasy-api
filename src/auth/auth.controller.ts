@@ -11,7 +11,7 @@ import { UserEntity } from '../user/user.entity';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/request/login.dto';
 import { RegisterDto } from './dtos/request/register.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('auth')
 @ApiTags('auth')

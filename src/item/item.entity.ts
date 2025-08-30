@@ -1,10 +1,10 @@
-import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
+import { ItemCategoryEntity } from '../item-category/item-category.entity';
 
-import { ItemSubCategoryEntity } from 'src/item-sub-category/item-sub-category.entity';
-import { MainEntity } from 'src/main-classes/mainEntity';
-import { OrderOptionsEntity } from 'src/orders/order-options.entity';
-import { OrderEntity } from 'src/orders/orders.entity';
-import { StoreEntity } from 'src/store/store.entity';
+import { ItemSubCategoryEntity } from '../item-sub-category/item-sub-category.entity';
+import { MainEntity } from '../main-classes/mainEntity';
+import { OrderOptionsEntity } from '../orders/order-options.entity';
+import { OrderEntity } from '../orders/orders.entity';
+import { StoreEntity } from '../store/store.entity';
 import {
   Column,
   Entity,

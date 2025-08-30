@@ -1,5 +1,5 @@
-import { MainEntity } from 'src/main-classes/mainEntity';
-import { UserEntity } from 'src/user/user.entity';
+import { MainEntity } from '../main-classes/mainEntity';
+import { UserEntity } from '../user/user.entity';
 import { Column, Entity, OneToOne, Unique } from 'typeorm';
 
 export enum TokenType {

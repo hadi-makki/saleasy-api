@@ -3,12 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ItemCategoryEntity } from './item-category.entity';
 import { Repository } from 'typeorm';
 import { createItemCategoryDto } from './dtos/req/create-item-category.dto';
-import { StoreEntity } from 'src/store/store.entity';
-import { S3Service } from 'src/s3/s3.service';
-import { MediaService } from 'src/media/media.service';
-import { UserEntity } from 'src/user/user.entity';
+import { StoreEntity } from '../store/store.entity';
+import { S3Service } from '../s3/s3.service';
+import { MediaService } from '../media/media.service';
+import { UserEntity } from '../user/user.entity';
 import { CreatedItemCategoryDto } from './dtos/res/created-item-category.dto';
-import { SuccessMessageReturn } from 'src/main-classes/success-message-return';
+import { SuccessMessageReturn } from '../main-classes/success-message-return';
 
 @Injectable()
 export class ItemCategoryService {

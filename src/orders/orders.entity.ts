@@ -1,7 +1,7 @@
-import { ItemEntity } from 'src/item/item.entity';
-import { MainEntity } from 'src/main-classes/mainEntity';
-import { StoreEntity } from 'src/store/store.entity';
-import { UserEntity } from 'src/user/user.entity';
+import { ItemEntity } from '../item/item.entity';
+import { MainEntity } from '../main-classes/mainEntity';
+import { StoreEntity } from '../store/store.entity';
+import { UserEntity } from '../user/user.entity';
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { OrderOptionsEntity } from './order-options.entity';
 

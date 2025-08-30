@@ -16,10 +16,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ItemService } from './item.service';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { AdminAuthGuard } from 'src/guards/admin.guard';
+import { AuthGuard } from '../guards/auth.guard';
+import { AdminAuthGuard } from '../guards/admin.guard';
 import { CreateItemDto } from './dtos/req/create-item.dto';
-import { FilterPropertiesInterface } from 'src/main-classes/filter-properties.interface';
+import { FilterPropertiesInterface } from '../main-classes/filter-properties.interface';
 import { And, ILike, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 import { UpdateItemDto } from './dtos/req/update-item';
 

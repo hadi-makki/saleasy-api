@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import TokenEntity from './token.entity';
 import { ConfigService } from '@nestjs/config';
-import { UserEntity } from 'src/user/user.entity';
+import { UserEntity } from '../user/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TokenEntity, UserEntity])],

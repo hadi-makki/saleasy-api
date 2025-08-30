@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MainDto } from 'src/main-classes/main-dto';
-import { CreatedStoreDto } from 'src/store/dtos/res/created-store.dto';
+import { MainDto } from '../../../main-classes/main-dto';
 
 export class LinkDto {
   @ApiProperty({ example: 'Instagram', description: 'Link title' })

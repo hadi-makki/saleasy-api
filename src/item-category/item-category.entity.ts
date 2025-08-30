@@ -1,9 +1,9 @@
-import { ItemEntity } from 'src/item/item.entity';
-import { MainEntity } from 'src/main-classes/mainEntity';
-import { UserEntity } from 'src/user/user.entity';
+import { ItemEntity } from '../item/item.entity';
+import { MainEntity } from '../main-classes/mainEntity';
+import { UserEntity } from '../user/user.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { ItemSubCategoryEntity } from '../item-sub-category/item-sub-category.entity';
-import { StoreEntity } from 'src/store/store.entity';
+import { StoreEntity } from '../store/store.entity';
 
 @Entity('item-category')
 export class ItemCategoryEntity extends MainEntity {

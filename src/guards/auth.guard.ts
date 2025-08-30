@@ -9,8 +9,8 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reflector } from '@nestjs/core';
-import { UserEntity } from 'src/user/user.entity';
-import { TokenService } from 'src/token/token.service';
+import { UserEntity } from '../user/user.entity';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

@@ -20,13 +20,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreatedLinkDto } from './dtos/res/created-link.dto';
-import { AdminAuthGuard } from 'src/guards/admin.guard';
+import { AdminAuthGuard } from '../guards/admin.guard';
 import { HeaderDto } from './dtos/req/update-header.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreatedItemCategoryDto } from 'src/item-category/dtos/res/created-item-category.dto';
-import { createItemCategoryDto } from 'src/item-category/dtos/req/create-item-category.dto';
-import { UserEntity } from 'src/user/user.entity';
-import { User } from 'src/decorators/users.decorator';
+import { CreatedItemCategoryDto } from '../item-category/dtos/res/created-item-category.dto';
+import { createItemCategoryDto } from '../item-category/dtos/req/create-item-category.dto';
+import { UserEntity } from '../user/user.entity';
+import { User } from '../decorators/users.decorator';
 import { AddCarouselItemDto } from './dtos/req/add-carousel-item';
 import { EditCarouselItemDto } from './dtos/req/edit-carousel-item';
 import { EditSideboxDto } from './dtos/req/edit-sidebox';

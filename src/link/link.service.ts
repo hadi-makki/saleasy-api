@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { allDefault, LinkEntity, sectionsTypes } from './link.entity';
 import { Repository } from 'typeorm';
-import { StoreEntity } from 'src/store/store.entity';
-import { NotFoundException } from 'src/error/not-found-error';
-import { BadRequestException } from 'src/error/bad-request-error';
+import { StoreEntity } from '../store/store.entity';
+import { NotFoundException } from '../error/not-found-error';
+import { BadRequestException } from '../error/bad-request-error';
 import { HeaderDto } from './dtos/req/update-header.dto';
-import { MediaService } from 'src/media/media.service';
-import { UserEntity } from 'src/user/user.entity';
+import { MediaService } from '../media/media.service';
+import { UserEntity } from '../user/user.entity';
 import { AddCarouselItemDto } from './dtos/req/add-carousel-item';
 import { v4 as uuid4 } from 'uuid';
 import { EditCarouselItemDto } from './dtos/req/edit-carousel-item';
@@ -15,9 +15,9 @@ import { EditSideboxDto } from './dtos/req/edit-sidebox';
 import { UpdateAdvertismentSectionDto } from './dtos/req/update-advertisment-section.dto';
 import { CreateAddSectionDto } from './dtos/req/create-ad-section.dto';
 import { isUUID } from 'class-validator';
-import { StoreService } from 'src/store/store.service';
-import { ItemService } from 'src/item/item.service';
-import { ItemCategoryEntity } from 'src/item-category/item-category.entity';
+import { StoreService } from '../store/store.service';
+import { ItemService } from '../item/item.service';
+import { ItemCategoryEntity } from '../item-category/item-category.entity';
 
 @Injectable()
 export class LinkService {
