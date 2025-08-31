@@ -140,9 +140,9 @@ export class LinkService {
       media = data.imageId;
     }
 
-    if (itemToUpdate.backgroundImage && image) {
-      await this.mediaService.delete(itemToUpdate.backgroundImage);
-    }
+    // if (itemToUpdate.backgroundImage && image) {
+    //   await this.mediaService.delete(itemToUpdate.backgroundImage);
+    // }
 
     itemToUpdate.backgroundImage = media;
     itemToUpdate.link = {
