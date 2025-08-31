@@ -102,7 +102,9 @@ export class ItemService {
 
   async getStoreDealsOfTheDayItems(storeId: string) {
     const checkStore = await this.storeRepository.findOne({
-      where: { id: storeId },
+      where: {
+        ...(isUUID(storeId) ? { id: storeId } : { dashedName: storeId }),
+      },
       relations: {
         link: true,
       },
@@ -112,7 +114,9 @@ export class ItemService {
     }
     const getItems = await this.itemRepository.find({
       where: {
-        store: { id: storeId },
+        store: {
+          ...(isUUID(storeId) ? { id: storeId } : { dashedName: storeId }),
+        },
       },
       order: {
         discount: 'DESC', // Highest discount first
@@ -133,7 +137,9 @@ export class ItemService {
 
   async getManuallySelectedItemsSection(storeId: string) {
     const getStore = await this.storeRepository.findOne({
-      where: { id: storeId },
+      where: {
+        ...(isUUID(storeId) ? { id: storeId } : { dashedName: storeId }),
+      },
       relations: {
         items: true,
         link: true,
@@ -168,7 +174,9 @@ export class ItemService {
 
   async getCategoryItemsSection(storeId: string) {
     const getStore = await this.storeRepository.findOne({
-      where: { id: storeId },
+      where: {
+        ...(isUUID(storeId) ? { id: storeId } : { dashedName: storeId }),
+      },
       relations: {
         items: true,
         link: true,
@@ -268,10 +276,10 @@ export class ItemService {
 
     config.where = {
       ...config.where,
-      store: { id: storeId },
+      store: {
+        ...(isUUID(storeId) ? { id: storeId } : { dashedName: storeId }),
+      },
     };
-
-    console.log('we are before the query');
 
     const paginateResult = await paginate(query, this.itemRepository, config);
 

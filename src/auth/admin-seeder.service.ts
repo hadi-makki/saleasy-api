@@ -1,13 +1,17 @@
 import { OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { slugify } from 'src/utils/helprt-functions';
 import { UserEntity, UserRole } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { StoreEntity } from 'src/store/store.entity';
 
 export class AdminSeederService implements OnModuleInit {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(StoreEntity)
+    private readonly storeRepository: Repository<StoreEntity>,
   ) {}
 
   async onModuleInit() {
@@ -26,5 +30,12 @@ export class AdminSeederService implements OnModuleInit {
         role: UserRole.ADMIN,
       });
     }
+
+    // fix stores slugs
+    // const stores = await this.storeRepository.find();
+    // for (const store of stores) {
+    //   store.dashedName = slugify(store.name);
+    //   await this.storeRepository.save(store);
+    // }
   }
 }

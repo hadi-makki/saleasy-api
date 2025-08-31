@@ -11,3 +11,7 @@ export const returnUser = (user: UserEntity) => {
 export function isLocalEnv(): boolean {
   return process.env.NODE_ENV.includes('local');
 }
+
+export const slugify = (text: string) => {
+  return text.toLowerCase().replace(/ /g, '-');
+};

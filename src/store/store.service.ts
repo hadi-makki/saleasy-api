@@ -11,6 +11,7 @@ import { In, Repository } from 'typeorm';
 import { CreateStoreDto } from './dtos/req/create-store.dto';
 import { CreatedStoreDto } from './dtos/res/created-store.dto';
 import { StoreEntity } from './store.entity';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class StoreService {
@@ -63,8 +64,9 @@ export class StoreService {
   }
 
   async getStoreById(id: string) {
+    console.log('this is the id', id);
     const store = await this.storeRepository.findOne({
-      where: { id },
+      where: { ...(isUUID(id) ? { id } : { dashedName: id }) },
       relations: {
         //   items: true,
         categories: true,
@@ -129,7 +131,9 @@ export class StoreService {
     }
 
     const getCustomers = await this.storeRepository.findOne({
-      where: { id: storeId },
+      where: {
+        ...(isUUID(storeId) ? { id: storeId } : { dashedName: storeId }),
+      },
       relations: {
         customers: true,
       },

@@ -223,9 +223,9 @@ export class LinkService {
     let media: string;
 
     if (image) {
-      if (sideBoxToUpdate.backgroundImage) {
-        await this.mediaService.delete(sideBoxToUpdate.backgroundImage);
-      }
+      // if (sideBoxToUpdate.backgroundImage) {
+      //   await this.mediaService.delete(sideBoxToUpdate.backgroundImage);
+      // }
       media = (await this.mediaService.upload(image, user.id)).id;
     } else {
       media = sideBoxToUpdate.backgroundImage;

@@ -21,6 +21,9 @@ export class StoreEntity extends MainEntity {
   @Column('text', { nullable: false, unique: true })
   name: string;
 
+  @Column('text', { nullable: true })
+  dashedName: string;
+
   @Column('text', { nullable: false })
   description: string;
 
