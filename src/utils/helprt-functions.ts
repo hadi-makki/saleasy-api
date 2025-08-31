@@ -1,4 +1,8 @@
 import { UserEntity } from '../user/user.entity';
+import * as dotenv from 'dotenv';
+dotenv.config({
+  path: `.env`,
+});
 
 export const returnUser = (user: UserEntity) => {
   const { password, ...restUser } = user;

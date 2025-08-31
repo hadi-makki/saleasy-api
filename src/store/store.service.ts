@@ -1,19 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StoreEntity } from './store.entity';
-import { In, Repository } from 'typeorm';
-import { CreateStoreDto } from './dtos/req/create-store.dto';
-import { MediaService } from '../media/media.service';
-import { UserEntity } from '../user/user.entity';
-import { Response } from 'express';
+import { FilterOperator, paginate, PaginateQuery } from 'nestjs-paginate';
 import { BadRequestException } from '../error/bad-request-error';
 import { allDefault, LinkEntity } from '../link/link.entity';
-import { CreatedStoreDto } from './dtos/res/created-store.dto';
-import { CreatedLinkDto } from '../link/dtos/res/created-link.dto';
-import { OrderEntity } from '../orders/orders.entity';
-import { returnUser } from '../utils/helprt-functions';
 import { FilterPropertiesInterface } from '../main-classes/filter-properties.interface';
-import { FilterOperator, paginate, PaginateQuery } from 'nestjs-paginate';
+import { MediaService } from '../media/media.service';
+import { OrderEntity } from '../orders/orders.entity';
+import { UserEntity } from '../user/user.entity';
+import { In, Repository } from 'typeorm';
+import { CreateStoreDto } from './dtos/req/create-store.dto';
+import { CreatedStoreDto } from './dtos/res/created-store.dto';
+import { StoreEntity } from './store.entity';
 
 @Injectable()
 export class StoreService {
@@ -46,9 +43,11 @@ export class StoreService {
       });
       const createdStore = await this.storeRepository.save(createStore);
       if (createdStore) {
+        let defaultLink = allDefault;
+        defaultLink.header.logo = uploadLogo.id;
         const createLink = this.linkRepository.create({
-          ...allDefault,
-          store: createdStore, // Pass the actual store entity, not just the ID
+          ...defaultLink,
+          store: createdStore,
         });
         await this.linkRepository.save(createLink).catch(async (error) => {
           await this.storeRepository.delete(createStore.id);

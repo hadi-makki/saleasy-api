@@ -100,54 +100,64 @@ export class LinkEntity extends MainEntity {
   @OneToOne(() => StoreEntity, (store) => store.link)
   store: StoreEntity;
 }
-
+// export const defaultHeader = {
+//   links: {
+//     instagram: '',
+//     facebook: '',
+//     twitter: '',
+//   },
+//   logo: '62df0584-a4b0-4dcd-90e0-dcf530fbdf81',
+//   logoSize: 100,
+//   shippingFee: 'Free Express Shipping',
+// };
 export const defaultHeader = {
+  logo: '',
   links: {
-    instagram: '',
-    facebook: '',
     twitter: '',
+    facebook: '',
+    instagram: '',
   },
-  logo: '62df0584-a4b0-4dcd-90e0-dcf530fbdf81',
   logoSize: 100,
   shippingFee: 'Free Express Shipping',
+  isNewUploaded: true,
 };
 export const defaultHero = {
   Carousel: [
     {
       id: '1',
+      link: {
+        title: 'SHOP NOW',
+        target: '',
+      },
       text1: 'LIFESTYLE COLLECTION',
       text2: 'MEN',
       text3: 'SALE UP TO',
       text4: '30% OFF',
       backgroundImage: '7990afbc-56cc-4427-bbde-b04735bae70c',
-      link: {
-        title: 'SHOP NOW',
-        target: '',
-      },
     },
   ],
   sideBoxes: [
     {
       id: '1',
-      backgroundImage: '96a2c92f-0dee-4b59-b158-cc7038739964',
-      text1: 'NEW ARRIVALS',
-      text2: 'SUMMER',
-      text3: 'SALE 20% OFF',
       link: {
         title: 'more proucts',
         target: '',
       },
+      text1: 'NEW ARRIVALS',
+      text2: 'SUMMER',
+      text3: 'SALE 20% OFF',
+      backgroundImage: '96a2c92f-0dee-4b59-b158-cc7038739964',
     },
     {
       id: '2',
-      backgroundImage: '3284596c-1b36-496e-8e60-d53a8a186237',
-      text1: 'NEW ARRIVALS',
-      text2: 'SUMMER',
-      text3: 'SALE 20% OFF',
       link: {
         title: 'more proucts',
         target: '',
       },
+      text1: 'NEW ARRIVALS',
+      text2: 'SUMMER',
+      text3: 'SALE 20% OFF',
+      backgroundImage: '3284596c-1b36-496e-8e60-d53a8a186237',
     },
   ],
 };
@@ -155,38 +165,38 @@ export const defaultCategoryItems = [];
 export const defaultSections = [
   {
     id: '1',
+    type: sectionsTypes.deals_of_the_day,
+    items: null,
     title: 'section 1',
     categoryId: '',
-    type: sectionsTypes.deals_of_the_day,
     advertisementSection: [
       {
         id: '1',
-        text1: 'NEW ARRIVALS',
-        text2: 'SKI CLOTHES SALE',
-        redText: 'Up to 35% Off',
-        backgroundImage: '3284596c-1b36-496e-8e60-d53a8a186237',
         link: {
           title: 'SHOP NOW',
           target: '#',
         },
+        text1: 'NEW ARRIVALS',
+        text2: 'SKI CLOTHES SALE',
+        redText: 'Up to 35% Off',
+        backgroundImage: '3284596c-1b36-496e-8e60-d53a8a186237',
       },
     ],
-    items: null,
   },
   {
     id: '2',
-    title: 'section 2',
-    categoryId: '',
     type: sectionsTypes.manually_selected,
     items: [],
+    title: 'section 2',
+    categoryId: '',
     advertisementSection: [],
   },
   {
     id: '3',
-    title: 'section 3',
-    categoryId: 'e3771f0d-19f8-4213-b0cd-5871bca515be',
     type: sectionsTypes.category_related,
     items: null,
+    title: 'section 3',
+    categoryId: '9c42c082-42d1-4567-9c61-002aaa7b384d',
     advertisementSection: [],
   },
 ];

@@ -8,16 +8,18 @@ import { UserService } from '../user/user.service';
 import TokenEntity from '../token/token.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { AdminSeederService } from './admin-seeder.service';
+import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, TokenEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity, TokenEntity]), UserModule],
   controllers: [AuthController],
   providers: [
     AuthService,
-    UserService,
     JwtService,
     ConfigService,
     TokenService,
+    AdminSeederService,
   ],
 })
 export class AuthModule {}
